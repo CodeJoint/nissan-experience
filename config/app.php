@@ -52,9 +52,21 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'http://nissan.local'),
 
     'asset_url' => env('ASSET_URL', null),
+    
+    'api_base_url' => env('API_URL', 'http://api.nissan.local/v1'),
+    
+    'timezone' => env('TIMEZONE', 'America/Mexico_City'),
+    
+    'locale' => 'es_ES.UTF-8',
+    
+    'fallback_locale' => 'en',
+    
+    'key' => env('APP_KEY'),
+    
+    'cipher' => 'AES-256-CBC',
 
     /*
     |--------------------------------------------------------------------------
