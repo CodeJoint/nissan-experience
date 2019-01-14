@@ -28,6 +28,10 @@ use Illuminate\Http\Request;
             return response(["success" => TRUE]);
         });
         
+        Route::get('log', function () {
+            return response(["success" => TRUE, "data" => []]);
+        });
+        
         Route::post('action', function () {
             return response(["success" => TRUE]);
         });
