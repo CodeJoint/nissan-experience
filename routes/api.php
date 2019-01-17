@@ -20,7 +20,7 @@ use Illuminate\Http\Request;
          * Test the connection to the api,
          * THIS IS A  DUMMY ENDPOINT
          */
-        Route::get('robots', function () {
+        Route::get('ping', function () {
             return response("These are not the droids you're looking for... \nv " . config('app.api_version'), 200);
         });
         
@@ -32,7 +32,7 @@ use Illuminate\Http\Request;
             return response(["success" => TRUE, "data" => []]);
         });
         
-        Route::post('action', function () {
+        Route::post('event', function () {
             return response(["success" => TRUE], 200);
         });
     
