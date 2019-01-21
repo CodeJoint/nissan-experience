@@ -36,4 +36,10 @@ use Illuminate\Http\Request;
             return response(["success" => TRUE], 200);
         });
     
+        Route::post('stores', "DeviceController@createStore");
+        
+        Route::get('devices', "DeviceController@index");
+    
+        Route::post('device', "DeviceController@store");
+    
     });

@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class LogController extends Controller
+class DeviceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +14,7 @@ class LogController extends Controller
      */
     public function index()
     {
-        //
+    
     }
 
     /**
@@ -21,15 +22,34 @@ class LogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function store()
     {
-        $params = request()->only(['store', 'deviceID', 'events']);
-        Log::create([
-                        "store"     => $params->store,
-                        "device_id" => $params->store,
-                        "timespan" => $params->timespan,
-                        "events"    => $params->events
-                    ]);
+        
+        $request_params = request()->only(['deviceID', 'store', 'comment']);
+        // Check if store exists
+        $myStore = \App\Store::where("identifier", $request_params['store'])->first();
+
+        if(! $myStore)
+            return response( ["success" => FALSE, "message" => "No valid store found with the identifier: " . $request_params['store'] ], 404);
+
+        // Create device and associate with store
+        try{
+
+            DB::transaction(function () use ( $request_params, $myStore ) {
+
+                \App\Device::create([
+                    "device_id" => $request_params->deviceID,
+                    "store_id" => $myStore->id,
+                    "comment" => !empty($request_params->comment) ? $request_params->comment : NULL
+                ]);
+            });
+            return response( ["success" => TRUE, "message" => "Resource created successfully." ], 200);
+
+        }catch (\Exception $e){
+
+            return response( ["success" => FALSE, "message" => "Something happened! Please check your parameters and try again" ], 500);
+        }
+    
     }
 
     /**
@@ -38,7 +58,7 @@ class LogController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function createStore(Request $request)
     {
         //
     }
