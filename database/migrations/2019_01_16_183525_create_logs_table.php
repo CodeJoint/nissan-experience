@@ -15,7 +15,9 @@ class CreateLogsTable extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
+            $table->string('device_id')->foreign('store')->references('id')->on('stores');
+            $table->float('timespan');
+            $table->string('events');
         });
     }
 

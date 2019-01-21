@@ -14,8 +14,13 @@ class CreateDevicesTable extends Migration
     public function up()
     {
         Schema::create('devices', function (Blueprint $table) {
+    
+            $table->engine = 'InnoDB';
+            
             $table->increments('id');
-            $table->timestamps();
+            $table->string('device_id')->unique();
+            $table->integer('store_id')->foreign('store_id')->references('id')->on('stores');
+            $table->string('comment')->nullable();
         });
     }
 
