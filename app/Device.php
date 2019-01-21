@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Device extends Model
 {
-    protected $table = 'store_devices';
+    protected $table = 'devices';
     public $timestamps = false;
     
     
