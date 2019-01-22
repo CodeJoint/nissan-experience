@@ -16,6 +16,10 @@ use Illuminate\Http\Request;
 	 */
     Route::group( [ 'domain' => config('api_base_url'), 'middleware' => ['cors'] ], function () {
         
+        Route::get('/', function () {
+            abort(403);
+        });
+        
         /**
          * Test the connection to the api,
          * THIS IS A  DUMMY ENDPOINT
@@ -24,9 +28,7 @@ use Illuminate\Http\Request;
             return response("These are not the droids you're looking for... \nv " . config('app.api_version'), 200);
         });
         
-        Route::post('log', function () {
-            return response(["success" => TRUE]);
-        });
+        Route::post('log', "LogController@store");
         
         Route::get('log', function () {
             return response(["success" => TRUE, "data" => []]);
@@ -40,6 +42,6 @@ use Illuminate\Http\Request;
         
         Route::get('devices', "DeviceController@index");
     
-        Route::post('device', "DeviceController@store");
+        Route::post('devices', "DeviceController@store");
     
     });

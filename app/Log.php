@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Log extends Model
 {
-    protected $table = 'general_log';
+    protected $table = 'logs';
     public $timestamps = false;
    
 
@@ -16,7 +16,7 @@ class Log extends Model
      * @var array
      */
     protected $fillable = [
-        'store', 'timespan', 'events'
+        'store', 'event'
     ];
     
     

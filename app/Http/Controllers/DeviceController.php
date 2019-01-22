@@ -14,7 +14,8 @@ class DeviceController extends Controller
      */
     public function index()
     {
-    
+        $all_devices = \App\Device::all();
+        return response( ["success" => TRUE, "data" => $all_devices ], 200);
     }
 
     /**
@@ -28,9 +29,13 @@ class DeviceController extends Controller
         $request_params = request()->only(['deviceID', 'store', 'comment']);
         // Check if store exists
         $myStore = \App\Store::where("identifier", $request_params['store'])->first();
+        $myDevice = \App\Device::where("device_id", $request_params['deviceID'])->count();
 
         if(! $myStore)
             return response( ["success" => FALSE, "message" => "No valid store found with the identifier: " . $request_params['store'] ], 404);
+        
+        if($myDevice > 0)
+            return response( ["success" => FALSE, "message" => "Device {$request_params['store']} already registered"  ], 404);
 
         // Create device and associate with store
         try{
@@ -38,10 +43,10 @@ class DeviceController extends Controller
             DB::transaction(function () use ( $request_params, $myStore ) {
 
                 \App\Device::create([
-                    "device_id" => $request_params->deviceID,
-                    "store_id" => $myStore->id,
-                    "comment" => !empty($request_params->comment) ? $request_params->comment : NULL
-                ]);
+                                "device_id" => $request_params['deviceID'],
+                                "store_id"  => $myStore['id'],
+                                "comment"   => !empty($request_params['comment']) ? $request_params['comment'] : NULL
+                            ]);
             });
             return response( ["success" => TRUE, "message" => "Resource created successfully." ], 200);
 
@@ -60,7 +65,25 @@ class DeviceController extends Controller
      */
     public function createStore(Request $request)
     {
-        //
+        
+        try{
+        
+            $request_params = request()->only(['name', 'store']);
+            DB::transaction(function () use ( $request_params ) {
+    
+                \App\Store::create([
+                    "name" => $request_params['name'],
+                    "identifier" => $request_params['store']
+                ]);
+    
+    
+            });
+            return response( ["success" => TRUE, "message" => "Resource created successfully." ], 200);
+        
+        }catch (\Exception $e){
+        
+            return response( ["success" => FALSE, "message" => "Something happened while creating resource." ], 500);
+        }
     }
     
 

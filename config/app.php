@@ -64,10 +64,6 @@ return [
     
     'timezone' => env('TIMEZONE', 'America/Mexico_City'),
     
-    'locale' => 'es_ES.UTF-8',
-    
-    'fallback_locale' => 'en',
-    
     'key' => env('APP_KEY'),
     
     'cipher' => 'AES-256-CBC',
@@ -95,22 +91,11 @@ return [
     | to any of the locales which will be supported by the application.
     |
     */
-
-    'locale' => 'en',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application Fallback Locale
-    |--------------------------------------------------------------------------
-    |
-    | The fallback locale determines the locale to use when the current one
-    | is not available. You may change the value to correspond to any of
-    | the language folders that are provided through your application.
-    |
-    */
-
-    'fallback_locale' => 'en',
-
+    
+    'locale' => 'es_ES.UTF-8',
+    
+    'fallback_locale' => 'es',
+    
     /*
     |--------------------------------------------------------------------------
     | Faker Locale

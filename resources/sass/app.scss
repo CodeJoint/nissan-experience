@@ -8,7 +8,26 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+*,*:before,*:after{
+  box-sizing: inherit;
+}
+
+body{
+  font-family: 'Sarabun', sans-serif;
+}
+html { font-size: 62%; }
+body { font-size: 1.2px; font-size: 1.2rem; } /* =14px */
+h1   { font-size: 2px; font-size: 2rem; } /* =24px */
+
+
 .navbar-laravel {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.dataCard{
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 1rem;
+  margin-bottom: 1rem;
 }

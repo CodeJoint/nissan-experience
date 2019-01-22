@@ -23,13 +23,7 @@ class LogController extends Controller
      */
     public function create()
     {
-        $params = request()->only(['store', 'deviceID', 'events']);
-        Log::create([
-                        "store"     => $params->store,
-                        "device_id" => $params->store,
-                        "timespan" => $params->timespan,
-                        "events"    => $params->events
-                    ]);
+        //
     }
 
     /**
@@ -40,7 +34,23 @@ class LogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+    
+            $params = request()->only(['deviceID', 'events']);
+            foreach ($params['events'] as $event){
+        
+                \App\Log::create([
+                    "device_id" => $params['deviceID'],
+                    "event"     => " " . json_encode($event) . " "
+                ]);
+            }
+            return response( ["success" => TRUE, "message" => "Events were logged." ], 200);
+        
+        }catch (\Exception $e){
+        
+            return response( ["success" => FALSE, "message" => "Something happened! Please check your parameters and try again" ], 500);
+        }
+    
     }
 
     /**
