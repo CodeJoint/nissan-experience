@@ -16,7 +16,7 @@ class Log extends Model
      * @var array
      */
     protected $fillable = [
-        'store', 'event'
+        'device_id', 'event'
     ];
     
     

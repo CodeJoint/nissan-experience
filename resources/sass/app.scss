@@ -19,6 +19,32 @@ html { font-size: 62%; }
 body { font-size: 1.2px; font-size: 1.2rem; } /* =14px */
 h1   { font-size: 2px; font-size: 2rem; } /* =24px */
 
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+
 
 .navbar-laravel {
   background-color: #fff;
@@ -26,8 +52,21 @@ h1   { font-size: 2px; font-size: 2rem; } /* =24px */
 }
 
 .dataCard{
+  min-height: 13rem;
   display: inline-block;
   vertical-align: top;
   margin-right: 1rem;
   margin-bottom: 1rem;
+  text-align: center;
+  color: rgba(42, 42, 42, 0.83);
+
+  .center-icon{
+    display: block;
+    margin: auto;
+
+    .material-icons{
+      font-size: 3rem;
+    }
+
+  }
 }

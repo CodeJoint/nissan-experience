@@ -37,17 +37,23 @@ class LogController extends Controller
         try{
     
             $params = request()->only(['deviceID', 'events']);
-            foreach ($params['events'] as $event){
-        
+            extract($params);
+    
+            $device = \App\Device::where("device_id", $deviceID)->first();
+            if(! $device)
+                return response( ["success" => FALSE, "message" => "Device not found, please register devices first." ], 404);
+            
+            foreach($events as $key => $obj){
+    
                 \App\Log::create([
-                    "device_id" => $params['deviceID'],
-                    "event"     => " " . json_encode($event) . " "
-                ]);
+                                "device_id" => $deviceID,
+                                "event"     => '{ "name": "' . $key . '", "actions": ' . json_encode($obj) . ' }'
+                            ]);
             }
-            return response( ["success" => TRUE, "message" => "Events were logged." ], 200);
+            return response( ["success" => TRUE, "message" => "Events were logged successfully." ], 200);
         
         }catch (\Exception $e){
-        
+
             return response( ["success" => FALSE, "message" => "Something happened! Please check your parameters and try again" ], 500);
         }
     
