@@ -33,7 +33,7 @@
                             </i>
                         </div>
                         <div class="card-content">
-                            <h3>{{ $device_count }} / {{ $device_count }}</h3>
+                            <h3>{{ $active_device_count }} / {{ $device_count }}</h3>
                         </div>
                         <div class="card-subtitle">( activos / total )</div>
                     </div>

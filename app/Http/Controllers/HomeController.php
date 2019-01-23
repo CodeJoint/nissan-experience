@@ -26,12 +26,15 @@ class HomeController extends Controller
         $full_log = \App\Log::all();
         $event_count    = \App\Log::count();
         $devices        = \App\Device::all('device_id');
-        $devices_values = array_values($devices->toArray());
+        $devices_array  = [];
+        foreach ($devices as $device_id){
+            $devices_array[] = $device_id->device_id;
+        }
         $device_count   = $devices->count();
-        $active_device_count   = \App\Device::whereHas('logs', function ($query) use($devices) {
-                                    $query->where('device_id', 'IN', array_values($devices->toArray()));
-                                })->count();
+        $active_device_count   = \App\Device::whereHas('logs', function ($query) use( $devices_array ) {
+                                    $query->where('device_id', 'IN', $devices_array);
+                                });
         $store_count    = \App\Store::count();
-        return view('home')->with(compact(['full_log', 'store_count', 'device_count', 'event_count']));
+        return view('home')->with(compact(['full_log', 'store_count', 'device_count', 'active_device_count', 'event_count']));
     }
 }
