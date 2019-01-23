@@ -30,15 +30,13 @@ use Illuminate\Http\Request;
         
         Route::post('log', "LogController@store");
         
-        Route::get('log', function () {
-            return response(["success" => TRUE, "data" => []]);
-        });
+        Route::get('log', "LogController@index");
         
-        Route::post('event', function () {
-            return response(["success" => TRUE], 200);
-        });
+        Route::post('event', "LogController@storeEvent");
     
         Route::post('stores', "DeviceController@createStore");
+        
+        Route::get('stores', "DeviceController@indexStores");
         
         Route::get('devices', "DeviceController@index");
     

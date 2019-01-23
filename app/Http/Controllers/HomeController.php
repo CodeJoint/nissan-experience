@@ -23,10 +23,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $log = \App\Log::all();
-        $device_count = \App\Device::count();
-        $store_count = \App\Store::count();
-        $event_count = \App\Log::count();
-        return view('home')->with(compact(['log', 'store_count', 'device_count', 'event_count']));
+        $full_log = \App\Log::all();
+        $event_count    = \App\Log::count();
+        $devices        = \App\Device::all('device_id');
+        $devices_values = array_values($devices->toArray());
+        $device_count   = $devices->count();
+        $active_device_count   = \App\Device::whereHas('logs', function ($query) use($devices) {
+                                    $query->where('device_id', 'IN', array_values($devices->toArray()));
+                                })->count();
+        $store_count    = \App\Store::count();
+        return view('home')->with(compact(['full_log', 'store_count', 'device_count', 'event_count']));
     }
 }

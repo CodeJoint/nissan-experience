@@ -18,4 +18,14 @@ class Device extends Model
     protected $fillable = [
         'device_id', 'store_id', 'comment'
     ];
+    
+    /**
+     * Fetch the pins belonging to this board
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function logs(){
+        return $this->hasMany('\App\Log', 'device_id','device_id');
+    }
+    
 }

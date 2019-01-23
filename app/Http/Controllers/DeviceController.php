@@ -17,6 +17,17 @@ class DeviceController extends Controller
         $all_devices = \App\Device::all();
         return response( ["success" => TRUE, "data" => $all_devices ], 200);
     }
+    
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexStores()
+    {
+        $all_stores = \App\Store::all();
+        return response( ["success" => TRUE, "data" => $all_stores ], 200);
+    }
 
     /**
      * Show the form for creating a new resource.

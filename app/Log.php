@@ -20,4 +20,13 @@ class Log extends Model
     ];
     
     
+    /**
+     * Fetch relationships
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function device(){
+        return $this->belongsTo('\App\Device', 'device_id', 'device_id')->first();
+    }
+    
 }

@@ -74,8 +74,8 @@
 
                                 <tbody>
 
-                                    @if(!$log)
-                                        @foreach($log as $log_entry)
+                                    @if(!empty($full_log))
+                                        @foreach($full_log as $log_entry)
                                             <tr>
                                                 <td>{{ $log_entry->timestamp }}</td>
                                                 <td>{{ $log_entry->device_id }}</td>
