@@ -45,10 +45,10 @@ class LogController extends Controller
                 return response( ["success" => FALSE, "message" => "Device not found, please register devices first." ], 404);
             
             foreach($events as $key => $obj){
-    
+                
                 \App\Log::create([
                                 "device_id" => $deviceID,
-                                "event"     => '{ "name": "' . $key . '", "actions": ' . json_encode($obj) . ' }'
+                                "event"     => '{ "name": "' . $obj['name'] . '", "actions": ' . json_encode($obj) . ' }'
                             ]);
             }
             return response( ["success" => TRUE, "message" => "Events were logged successfully." ], 200);
