@@ -8,7 +8,6 @@ class Log extends Model
 {
     protected $table = 'logs';
     public $timestamps = false;
-   
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +18,6 @@ class Log extends Model
         'device_id', 'event'
     ];
     
-    
     /**
      * Fetch relationships
      *
@@ -27,6 +25,18 @@ class Log extends Model
      */
     public function device(){
         return $this->belongsTo('\App\Device', 'device_id', 'device_id')->first();
+    }
+    
+    /**
+     *
+     */
+    public function getEventAttribute($event) {
+        $event = json_decode($event);
+        $formatted = [];
+        foreach ($event as $key => $part){
+            $formatted[$key] = $part;
+        }
+        return $formatted;
     }
     
 }

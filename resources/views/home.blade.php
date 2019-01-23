@@ -79,7 +79,7 @@
                                             <tr>
                                                 <td>{{ $log_entry->timestamp }}</td>
                                                 <td>{{ $log_entry->device_id }}</td>
-                                                <td>{{ $log_entry->event }}</td>
+                                                <td><strong>{{ $log_entry->event['name'] }}</strong> [Interacciones: {{ $log_entry->event['actions']->interaction }}, Tiempo: {{ $log_entry->event['actions']->timeSpent }}]</td>
                                             </tr>
                                         @endforeach
                                     @else

@@ -107,7 +107,8 @@ abbr[data-original-title] {
           text-decoration: underline dotted;
   cursor: help;
   border-bottom: 0;
-  text-decoration-skip-ink: none;
+  -webkit-text-decoration-skip-ink: none;
+          text-decoration-skip-ink: none;
 }
 
 address {
@@ -10545,6 +10546,19 @@ h1 {
 .navbar-laravel {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.logo-login {
+  display: block;
+  width: 320px;
+  height: auto;
+  margin: 2rem auto;
+}
+
+.logo-brand {
+  display: inline-block;
+  width: 100px;
+  height: auto;
 }
 
 .dataCard {

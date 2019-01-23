@@ -8,6 +8,8 @@
                 <div class="card-header">Inicio de sesión</div>
 
                 <div class="card-body">
+                    <img class="logo-login" src="{{ asset('images/nissan-logo.jpg') }}" alt="{{ config('app.name', 'Laravel') }}">
+                    <h2 style="text-align: center; margin: 1rem auto;">{{ config('app.name', 'Nissan Oculus Experience') }}</h2>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 

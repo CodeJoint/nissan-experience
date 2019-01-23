@@ -51,6 +51,18 @@ h1   { font-size: 2px; font-size: 2rem; } /* =24px */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
+.logo-login{
+  display: block;
+  width: 320px;
+  height: auto;
+  margin: 2rem auto;
+}
+.logo-brand{
+  display: inline-block;
+  width: 100px;
+  height: auto;
+}
+
 .dataCard{
   min-height: 13rem;
   display: inline-block;
