@@ -26,6 +26,10 @@ class HomeController extends Controller
         $full_log = \App\Log::all();
         $event_count    = \App\Log::count();
         $devices        = \App\Device::all('device_id');
+        foreach ($devices as $device){
+            $echo = $device->store()->first();
+            $echo = $device;
+        }
         $devices_array  = [];
         foreach ($devices as $device_id){
             $devices_array[] = $device_id->device_id;

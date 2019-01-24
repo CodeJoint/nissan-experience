@@ -20,12 +20,21 @@ class Device extends Model
     ];
     
     /**
-     * Fetch the pins belonging to this board
+     * Fetch logs associated with this device
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function logs(){
         return $this->hasMany('\App\Log', 'device_id','device_id');
+    }
+    
+    /**
+     * Fetch the store that owns this device
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+     */
+    public function store(){
+        return $this->belongsTo('\App\Store', 'store_id','id');
     }
     
 }

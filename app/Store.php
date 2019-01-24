@@ -19,5 +19,13 @@ class Store extends Model
         'name', 'identifier'
     ];
     
+    /**
+     * Fetch the devices associated with this store
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+     */
+    public function devices(){
+        return $this->hasMany('\App\Device', 'store_id', 'id');
+    }
     
 }
