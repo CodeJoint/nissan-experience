@@ -23,6 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        
         $full_log = \App\Log::all();
         $event_count    = \App\Log::count();
         $devices        = \App\Device::all('device_id');
@@ -41,4 +42,5 @@ class HomeController extends Controller
         $store_count    = \App\Store::count();
         return view('home')->with(compact(['full_log', 'store_count', 'device_count', 'active_device_count', 'event_count']));
     }
+    
 }
