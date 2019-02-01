@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div id="app" class="container">
         <div class="row">
             <div class="col-md-3">
             </div>
-            <section class="col-md-9">
-                <h1>KPI Dashboard</h1>
-
-                <section class="card dataCard" style="width: 20rem;">
+            <section class="col-md-9 mainSection">
+                <h1>{{ env('APP_NAME', "Nissan Oculus experience KPI") }}</h1>
+                <h2>Reporte de actividad</h2>
+                <section class="card dataCard" style="width: 16rem;">
                     <div class="card-body" >
                         <div class="card-title">Tiendas</div>
                         <div class="center-icon">
@@ -18,31 +18,49 @@
                         </div>
                         <div class="card-content">
                             <h3>{{ $store_count }}</h3>
+                            <form method="GET" class="form-inline">
+                                <div class="form-group mx-sm-3 mb-2">
+                                    <div class="form-group">
+                                        <select class="form-control" name="store" id="store">
+                                            <option value="">Todas</option>
+                                            @foreach($stores as $myStore)
+                                                <option value="{{ $myStore->identifier }}">{{ $myStore->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
+                            </form>
                         </div>
                     </div>
 
                 </section>
 
-                <section class="card dataCard" style="width: 20rem;">
+                <section class="card dataCard" style="width: 16rem;">
 
                     <div class="card-body">
                         <div class="card-title">Dispositivos</div>
-                        <div class="center-icon">
-                            <i class="material-icons">
-                                phone_android
-                            </i>
-                        </div>
                         <div class="card-content">
-                            <h3>{{ $device_count }} / {{ $device_count }}</h3>
+                            <doughnut-chart
+                                :labels="['Activos','Inactivos']"
+                                :values="[{{ $device_count }},1]"
+                                >
+                            </doughnut-chart>
+                            <div class="center-icon under">
+                                <i class="material-icons">
+                                    phone_android
+                                </i>
+                            </div>
+                            <h3>{{ 1 }} / {{ $device_count }}</h3>
                         </div>
                         <div class="card-subtitle">( activos / total )</div>
                     </div>
                 </section>
 
-                <section class="card dataCard" style="width: 20rem;">
+                <section class="card dataCard" style="width: 16rem;">
 
                     <div class="card-body">
-                        <div class="card-title">Eventos</div>
+                        <div class="card-title">Interacciones diarias</div>
                         <div class="center-icon">
                             <i class="material-icons">
                                 track_changes
@@ -54,11 +72,26 @@
                     </div>
                 </section>
 
+                <section class="card dataCard" style="width: 16rem;">
+
+                    <div class="card-body">
+                        <div class="card-title">Sesión promedio</div>
+                        <div class="center-icon">
+                            <i class="material-icons">
+                                alarm
+                            </i>
+                        </div>
+                        <div class="card-content">
+                            <h3>0.0 seg</h3>
+                        </div>
+                    </div>
+                </section>
+
 
                 <div class="row">
                     <div class="col-md-12">
 
-                        <h2>Log de eventos</h2>
+                        <h2>Log de los últimos 10 interacciones</h2>
                         <br>
 
                         <div class="table-responsive">

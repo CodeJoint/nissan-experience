@@ -24,7 +24,7 @@ class HomeController extends Controller
     public function index()
     {
         
-        $full_log = \App\Log::all();
+        $full_log       = \App\Log::orderBy('timestamp', 'desc')->take(10)->get();
         $event_count    = \App\Log::count();
         $devices        = \App\Device::all('device_id');
         foreach ($devices as $device){
@@ -39,8 +39,9 @@ class HomeController extends Controller
         $active_device_count   = \App\Device::whereHas('logs', function ($query) use( $devices_array ) {
                                     $query->where('device_id', 'IN', $devices_array);
                                 });
+        $stores         = \App\Store::all(['name','identifier']);
         $store_count    = \App\Store::count();
-        return view('home')->with(compact(['full_log', 'store_count', 'device_count', 'active_device_count', 'event_count']));
+        return view('home')->with(compact(['full_log', 'stores', 'store_count', 'device_count', 'active_device_count', 'event_count']));
     }
     
 }

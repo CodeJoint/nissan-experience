@@ -53,32 +53,80 @@ h1   { font-size: 2px; font-size: 2rem; } /* =24px */
 
 .logo-login{
   display: block;
-  width: 320px;
+  width: 200px;
   height: auto;
   margin: 2rem auto;
 }
-.logo-brand{
-  display: inline-block;
-  width: 100px;
-  height: auto;
-}
 
-.dataCard{
-  min-height: 13rem;
-  display: inline-block;
-  vertical-align: top;
-  margin-right: 1rem;
-  margin-bottom: 1rem;
-  text-align: center;
-  color: rgba(42, 42, 42, 0.83);
 
-  .center-icon{
-    display: block;
-    margin: auto;
-
-    .material-icons{
-      font-size: 3rem;
+.container{
+    &::before{
+        content: "";
+        background-color: black;
+        height: 100vh;
+        width: 8rem;
+        position: absolute;
+        left: 0;
+        top: 0;
     }
+    .logo-brand{
+        display: inline-block;
+        width: 48px;
+        height: auto;
+        margin: 0.5rem 0 0 -1.2rem;
+        position: relative;
+        z-index: 9;
+    }
+    .mainSection{
+        margin-left: 8rem;
 
-  }
+        h1{
+            font-size: 4rem;
+            margin: 1rem 2rem;
+            color: #666666;
+            text-transform: uppercase;
+        }
+        h2{
+            margin-top: 2rem;
+            padding: 0.5rem;
+            font-size: 1.25rem;
+            background-color: #666666;
+            color: white;
+            text-transform: uppercase;
+        }
+        .dataCard{
+            min-height: 13rem;
+            display: inline-block;
+            vertical-align: top;
+            margin: 1rem;
+            text-align: center;
+            color: rgba(42, 42, 42, 0.83);
+            background-color: #d9d9d9;
+            padding-top: 2rem;
+            .card-title{
+                background-color: #bb1821;
+                color: white;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                padding: 0.5px;
+                width: 113%;
+                position: absolute;
+                left: -1.1rem;
+                top: -0.5rem;
+            }
+
+            .center-icon{
+                display: block;
+                margin: auto;
+                &.under{
+                    margin-top: -2rem;
+                }
+                .material-icons{
+                    font-size: 3rem;
+                }
+
+            }
+        }
+    }
 }
+
