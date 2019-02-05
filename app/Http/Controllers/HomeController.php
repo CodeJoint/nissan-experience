@@ -64,7 +64,7 @@ class HomeController extends Controller
         $stores         = \App\Store::all(['name','identifier']);
         $store_count    = \App\Store::count();
         $notifications[] = "Se han registrado ".count($devices)." dispositivos en {$store_count} tiendas.";
-        $notifications[] = "La sección con mayor interacción es: ";
+        $notifications[] = "La sección con mayor interacción es: playContinuo";
         return view('home')->with(compact(['session_length','full_log', 'storeObject', 'stores', 'store_count', 'device_count', 'devices', 'active_device_count', 'event_count', 'notifications']));
     }
     
