@@ -6,32 +6,32 @@
             <div class="col-md-3">
             </div>
             <section class="col-md-9 mainSection">
-                <h1>{{ env('APP_NAME', "Nissan Oculus experience KPI") }}</h1>
-                <h2>Reporte de actividad</h2>
+                <h1>@if($storeObject){{$storeObject->identifier}}: @endif{{ env('APP_NAME', "Nissan Oculus experience KPI") }}</h1>
+                <h2>Reporte diario de actividad @if($storeObject) Tienda: {{$storeObject->name}} @endif</h2>
                 <section class="card dataCard" style="width: 16rem;">
                     <div class="card-body" >
                         <div class="card-title">Tiendas</div>
+                        <div class="card-content">
+                            <div class="dropdown storeDropdown">
+                                <button class="btn btn-info btn-lg" type="button">
+                                    Filtrar
+                                </button>
+                                <button type="button" class="btn btn-lg btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="sr-only">Store Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    @foreach($stores as $myStore)
+                                        <a class="dropdown-item {{ set_active('/', $myStore->identifier) }}" href="?store={{ $myStore->identifier }}">{{ $myStore->name }}</a>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
                         <div class="center-icon">
                             <i class="material-icons">
                                 store
                             </i>
                         </div>
-                        <div class="card-content">
-                            <h3>{{ $store_count }}</h3>
-                            <form method="GET" class="form-inline">
-                                <div class="form-group mx-sm-3 mb-2">
-                                    <div class="form-group">
-                                        <select class="form-control" name="store" id="store">
-                                            <option value="">Todas</option>
-                                            @foreach($stores as $myStore)
-                                                <option value="{{ $myStore->identifier }}">{{ $myStore->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <button type="submit" class="btn btn-primary mb-2">Filtrar</button>
-                            </form>
-                        </div>
+                        <h3>{{ $store_count }}</h3>
                     </div>
 
                 </section>
@@ -43,7 +43,7 @@
                         <div class="card-content">
                             <doughnut-chart
                                 :labels="['Activos','Inactivos']"
-                                :values="[{{ $device_count }},1]"
+                                :values="[{{ $device_count }},{{$active_device_count}}]"
                                 >
                             </doughnut-chart>
                             <div class="center-icon under">
@@ -51,7 +51,7 @@
                                     phone_android
                                 </i>
                             </div>
-                            <h3>{{ 1 }} / {{ $device_count }}</h3>
+                            <h3>{{ $active_device_count }} / {{ $device_count }}</h3>
                         </div>
                         <div class="card-subtitle">( activos / total )</div>
                     </div>
@@ -60,8 +60,10 @@
                 <section class="card dataCard" style="width: 16rem;">
 
                     <div class="card-body">
-                        <div class="card-title">Interacciones diarias</div>
+                        <div class="card-title">Accesos diarios</div>
                         <div class="center-icon">
+                            <br>
+                            <br>
                             <i class="material-icons">
                                 track_changes
                             </i>
@@ -77,21 +79,53 @@
                     <div class="card-body">
                         <div class="card-title">Sesión promedio</div>
                         <div class="center-icon">
+                            <br>
+                            <br>
                             <i class="material-icons">
                                 alarm
                             </i>
                         </div>
                         <div class="card-content">
-                            <h3>0.0 seg</h3>
+                            <h3>{{ round($session_length,1) }} seg</h3>
                         </div>
                     </div>
                 </section>
 
 
-                <div class="row">
-                    <div class="col-md-12">
+                <div class="row _lists">
 
-                        <h2>Log de los últimos 10 interacciones</h2>
+                    <div class="col-md-5 _notificationsPool" style="float: left">
+
+                        <h2>Notificaciones</h2>
+                        <br>
+
+                        <div class="table-responsive">
+                            <table class="table table-striped table-sm">
+
+                                <tbody>
+
+                                @if(!empty($notifications))
+                                    @foreach($notifications as $log_entry)
+                                        <tr>
+                                            <td><i class="material-icons">info</i> {{$log_entry}}</td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td>No hay notificaciones</td>
+                                    </tr>
+                                @endif
+
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6" style="float: left">
+
+                        <h2>Log de los últimos 10 usuarios</h2>
                         <br>
 
                         <div class="table-responsive">
@@ -112,7 +146,7 @@
                                             <tr>
                                                 <td>{{ $log_entry->timestamp }}</td>
                                                 <td>{{ $log_entry->device_id }}</td>
-                                                <td><strong>{{ $log_entry->event['name'] }}</strong> [Interacciones: {{ $log_entry->event['actions']->interaction }}, Tiempo: {{ $log_entry->event['actions']->timeSpent }}]</td>
+                                                <td><strong>{{ $log_entry->event['name'] }}</strong> [Interacciones: {{ $log_entry->event['actions']->interaction }}, Tiempo: {{ round($log_entry->event['actions']->timeSpent,1) }} seg]</td>
                                             </tr>
                                         @endforeach
                                     @else
@@ -132,6 +166,5 @@
 
             </section>
         </div>
-
 
 @endsection

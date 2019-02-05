@@ -10570,8 +10570,38 @@ h1 {
   width: 48px;
   height: auto;
   margin: 0.5rem 0 0 -1.2rem;
-  position: relative;
+  position: fixed;
+  top: 1rem;
+  left: 2.5rem;
   z-index: 9;
+}
+
+.container .card.login {
+  margin-top: 4rem;
+}
+
+.container .card.login .loginButton {
+  float: right;
+  padding: 1rem;
+  width: 100px;
+  background-color: #bb1821;
+  border-color: #bb1821;
+  font-size: 1.25rem;
+}
+
+.container .card.login .loginButton:hover {
+  background-color: rgba(187, 24, 33, 0.8);
+}
+
+.container .card.login .card-header {
+  font-size: 1.5rem;
+  color: white;
+  background-color: #666666;
+}
+
+.container .card.login h2 {
+  font-size: 1.4rem;
+  margin: 1rem auto;
 }
 
 .container .mainSection {
@@ -10609,12 +10639,20 @@ h1 {
   background-color: #bb1821;
   color: white;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  padding: 0.5px;
-  width: 113%;
+  letter-spacing: 1.2px;
+  padding: 0.5rem;
+  width: 106%;
   position: absolute;
   left: -1.1rem;
-  top: -0.5rem;
+  top: 0.5rem;
+}
+
+.container .mainSection .dataCard .storeDropdown {
+  margin: 1.5rem auto;
+}
+
+.container .mainSection .dataCard .storeDropdown .dropdown-item {
+  width: 79%;
 }
 
 .container .mainSection .dataCard .center-icon {
@@ -10628,5 +10666,28 @@ h1 {
 
 .container .mainSection .dataCard .center-icon .material-icons {
   font-size: 3rem;
+}
+
+.container .mainSection ._lists tbody {
+  display: block;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.container .mainSection ._lists thead,
+.container .mainSection ._lists tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.container .mainSection ._lists thead i,
+.container .mainSection ._lists tbody tr i {
+  font-size: 1.5rem;
+  vertical-align: sub;
+}
+
+.container .mainSection ._lists ._notificationsPool tbody {
+  color: dodgerblue;
 }
 

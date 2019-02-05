@@ -24,7 +24,7 @@ class Log extends Model
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function device(){
-        return $this->belongsTo('\App\Device', 'device_id', 'device_id')->first();
+        return $this->belongsTo(\App\Device::class, 'device_id', 'device_id')->first();
     }
     
     /**

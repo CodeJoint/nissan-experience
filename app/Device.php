@@ -25,7 +25,7 @@ class Device extends Model
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function logs(){
-        return $this->hasMany('\App\Log', 'device_id','device_id');
+        return $this->hasMany(\App\Log::class, 'device_id','device_id');
     }
     
     /**
@@ -34,7 +34,7 @@ class Device extends Model
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
     public function store(){
-        return $this->belongsTo('\App\Store', 'store_id','id');
+        return $this->belongsTo(\App\Store::class, 'store_id','id');
     }
     
 }

@@ -74,8 +74,35 @@ h1   { font-size: 2px; font-size: 2rem; } /* =24px */
         width: 48px;
         height: auto;
         margin: 0.5rem 0 0 -1.2rem;
-        position: relative;
+        position: fixed;
+        top: 1rem;
+        left: 2.5rem;
         z-index: 9;
+    }
+
+    .card.login{
+        margin-top: 4rem;
+
+        .loginButton{
+            float: right;
+            padding: 1rem;
+            width: 100px;
+            background-color: $maroon;
+            border-color: $maroon;
+            font-size: 1.25rem;
+            &:hover{
+                background-color: transparentize($maroon, 0.2);
+            }
+        }
+        .card-header{
+            font-size: 1.5rem;
+            color: white;
+            background-color: $dark_gray;
+        }
+        h2{
+            font-size: 1.4rem;
+            margin: 1rem auto;
+        }
     }
     .mainSection{
         margin-left: 8rem;
@@ -83,14 +110,14 @@ h1   { font-size: 2px; font-size: 2rem; } /* =24px */
         h1{
             font-size: 4rem;
             margin: 1rem 2rem;
-            color: #666666;
+            color: $dark_gray;
             text-transform: uppercase;
         }
         h2{
             margin-top: 2rem;
             padding: 0.5rem;
             font-size: 1.25rem;
-            background-color: #666666;
+            background-color: $dark_gray;
             color: white;
             text-transform: uppercase;
         }
@@ -104,17 +131,22 @@ h1   { font-size: 2px; font-size: 2rem; } /* =24px */
             background-color: #d9d9d9;
             padding-top: 2rem;
             .card-title{
-                background-color: #bb1821;
+                background-color: $maroon;
                 color: white;
                 text-transform: uppercase;
-                letter-spacing: 1px;
-                padding: 0.5px;
-                width: 113%;
+                letter-spacing: 1.2px;
+                padding: 0.5rem;
+                width: 106%;
                 position: absolute;
                 left: -1.1rem;
-                top: -0.5rem;
+                top: 0.5rem;
             }
-
+            .storeDropdown{
+                margin: 1.5rem auto;
+                .dropdown-item{
+                    width: 79%;
+                }
+            }
             .center-icon{
                 display: block;
                 margin: auto;
@@ -125,6 +157,28 @@ h1   { font-size: 2px; font-size: 2rem; } /* =24px */
                     font-size: 3rem;
                 }
 
+            }
+        }
+        ._lists{
+            tbody {
+                display: block;
+                max-height: 180px;
+                overflow-y: auto;
+            }
+            thead,
+            tbody tr {
+                display: table;
+                width: 100%;
+                table-layout: fixed;
+                i{
+                    font-size: 1.5rem;
+                    vertical-align: sub;
+                }
+            }
+            ._notificationsPool{
+                tbody{
+                    color: dodgerblue;
+                }
             }
         }
     }

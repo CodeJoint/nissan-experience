@@ -25,7 +25,7 @@ class Store extends Model
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
     public function devices(){
-        return $this->hasMany('\App\Device', 'store_id', 'id');
+        return $this->hasMany(\App\Device::class, 'store_id', 'id');
     }
     
 }

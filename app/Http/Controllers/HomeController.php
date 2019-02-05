@@ -23,25 +23,49 @@ class HomeController extends Controller
      */
     public function index()
     {
-        
-        $full_log       = \App\Log::orderBy('timestamp', 'desc')->take(10)->get();
-        $event_count    = \App\Log::count();
-        $devices        = \App\Device::all('device_id');
-        foreach ($devices as $device){
-            $echo = $device->store()->first();
-            $echo = $device;
-        }
+        $notifications  = [];
         $devices_array  = [];
-        foreach ($devices as $device_id){
-            $devices_array[] = $device_id->device_id;
+        $storeObject    = NULL;
+        $session_length  = 0;
+        $from   = date('Y-m-d' . ' 00:00:00', time());
+        $to     = date('Y-m-d' . ' 24:60:60', time());
+        $store_param    = request()->get('store') && request()->get('store') !== "" ? request()->get('store') : NULL;
+        $full_log       = \App\Log::where('timestamp', '>', $from)
+                                    ->where('timestamp', '<', $to)
+                                    ->orderBy('timestamp', 'desc')
+                                    ->groupBy('timestamp')
+                                    ->take(10)->get();
+        $event_count    = $full_log->count();
+        if($store_param){
+            $storeObject    = \App\Store::where('identifier', $store_param)->first();
+            if(!$storeObject)
+                abort(404);
+            $devices        = \App\Device::where('store_id', $storeObject)->get();
+        }else{
+            $devices        = \App\Device::all();
+        }
+        if($devices->isEmpty())
+            $notifications[] = "No se ha registrado ningún dispositivo en esta tienda.";
+     
+        foreach ($devices as $myDevice){
+//            $myLogs = $myDevice->logs()->get();
+//            $myStore = $myDevice->store()->first();
+            $devices_array[] = $myDevice->device_id;
+        }
+        foreach ($full_log as $log_entry){
+//            $events = $log_entry->event;
+//            $log_json = json_decode($log_entry->event['actions']->timeSpent, true);
+            $session_length += $log_entry->event['actions']->timeSpent;
         }
         $device_count   = $devices->count();
         $active_device_count   = \App\Device::whereHas('logs', function ($query) use( $devices_array ) {
-                                    $query->where('device_id', 'IN', $devices_array);
-                                });
+//                                    $query->where('device_id', 'IN', $devices_array);
+                                })->count();
         $stores         = \App\Store::all(['name','identifier']);
         $store_count    = \App\Store::count();
-        return view('home')->with(compact(['full_log', 'stores', 'store_count', 'device_count', 'active_device_count', 'event_count']));
+        $notifications[] = "Se han registrado ".count($devices)." dispositivos en {$store_count} tiendas.";
+        $notifications[] = "La sección con mayor interacción es: ";
+        return view('home')->with(compact(['session_length','full_log', 'storeObject', 'stores', 'store_count', 'device_count', 'devices', 'active_device_count', 'event_count', 'notifications']));
     }
     
 }
