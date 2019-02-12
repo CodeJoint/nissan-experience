@@ -3,28 +3,55 @@
 @section('content')
     <div id="app" class="container">
         <div class="row">
-            <div class="col-md-3">
-            </div>
+            <div class="col-md-3"></div>
             <section class="col-md-9 mainSection">
                 <h1>@if($storeObject){{$storeObject->identifier}}: @endif{{ env('APP_NAME', "Nissan Oculus experience KPI") }}</h1>
-                <h2>Reporte diario de actividad @if($storeObject) Tienda: {{$storeObject->name}} @endif</h2>
-                <section class="card dataCard" style="width: 16rem;">
-                    <div class="card-body" >
-                        <div class="card-title">Tiendas</div>
-                        <div class="card-content">
-                            <div class="dropdown storeDropdown">
-                                <button class="btn btn-info btn-lg" type="button">
-                                    Filtrar
-                                </button>
-                                <button type="button" class="btn btn-lg btn-info dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="sr-only">Store Dropdown</span>
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                <section class="all-of-the-above">
+
+                    <form action="{{ url('home') }}" method="GET" id="filterForm">
+                        <h2>Filtros</h2>
+                        <div class="each-filter">
+                            <div class="form-group">
+                                <select class="form-control" id="exampleFormControlSelect1">
+                                    <option value="">Elige una tienda</option>
                                     @foreach($stores as $myStore)
-                                        <a class="dropdown-item {{ set_active('/', $myStore->identifier) }}" href="?store={{ $myStore->identifier }}">{{ $myStore->name }}</a>
+                                        <option selected="{{ set_active('/', $myStore->identifier, 'selected') }}">{{ $myStore->name }}</option>
                                     @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="each-filter">
+                            <div class="form-group">
+                                <div class='input-group date _datepicker' id='datetimepicker_start'>
+                                    <input type='text' name="start" class="form-control" placeholder="MM/DD/AAAA" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
                                 </div>
                             </div>
+                        </div>
+                        <div class="each-filter">
+                            <div class="form-group">
+                                <div class='input-group date _datepicker' id='datetimepicker_end'>
+                                    <input type='text' name="end" class="form-control" placeholder="MM/DD/AAAA" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </section>
+
+                <h2>KPI @if($storeObject) Tienda: {{$storeObject->name}} @endif</h2>
+                <section class="card dataCard" style="width: 16rem;">
+                    <div class="card-body" >
+                        <div class="card-title">Tiendas activas</div>
+                        <div class="card-content">
+
                         </div>
                         <div class="center-icon">
                             <i class="material-icons">
@@ -42,8 +69,8 @@
                         <div class="card-title">Dispositivos</div>
                         <div class="card-content">
                             <doughnut-chart
-                                :labels="['Activos','Inactivos']"
-                                :values="[{{ $device_count }},{{$active_device_count}}]"
+                                :labels="['Activos','Registrados']"
+                                :values="[{{$active_device_count}},{{ $device_count-$active_device_count }}]"
                                 >
                             </doughnut-chart>
                             <div class="center-icon under">
@@ -53,14 +80,14 @@
                             </div>
                             <h3>{{ $active_device_count }} / {{ $device_count }}</h3>
                         </div>
-                        <div class="card-subtitle">( activos / total )</div>
+                        <div class="card-subtitle">( activos / registrados )</div>
                     </div>
                 </section>
 
                 <section class="card dataCard" style="width: 16rem;">
 
                     <div class="card-body">
-                        <div class="card-title">Accesos diarios</div>
+                        <div class="card-title">Acceso diario promedio</div>
                         <div class="center-icon">
                             <br>
                             <br>
@@ -86,7 +113,7 @@
                             </i>
                         </div>
                         <div class="card-content">
-                            <h3>{{ round($session_length,1) }} seg</h3>
+                            <h3>{{ round($session_length, 1) }} seg</h3>
                         </div>
                     </div>
                 </section>
@@ -96,7 +123,7 @@
 
                     <div class="col-md-5 _notificationsPool" style="float: left">
 
-                        <h2>Notificaciones</h2>
+                        <h2><i class="material-icons">info</i> Notificaciones</h2>
                         <br>
 
                         <div class="table-responsive">
@@ -107,7 +134,7 @@
                                 @if(!empty($notifications))
                                     @foreach($notifications as $log_entry)
                                         <tr>
-                                            <td><i class="material-icons">info</i> {{$log_entry}}</td>
+                                            <td>{{$log_entry}}</td>
                                         </tr>
                                     @endforeach
                                 @else
@@ -129,7 +156,7 @@
                         <br>
 
                         <div class="table-responsive">
-                            <table class="table table-striped table-sm">
+                            <table class="userLogTable table table-striped table-sm">
 
                                 <thead>
                                     <tr>
@@ -166,5 +193,6 @@
 
             </section>
         </div>
+    </div>
 
 @endsection

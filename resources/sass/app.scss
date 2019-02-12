@@ -178,7 +178,15 @@ h1   { font-size: 2px; font-size: 2rem; } /* =24px */
             ._notificationsPool{
                 tbody{
                     color: dodgerblue;
+                    font-size: 1.2rem;
+                    letter-spacing: 1px;
+                    line-height: 2rem;
                 }
+            }
+            .userLogTable{
+                font-size: 1.2rem;
+                letter-spacing: 1px;
+                line-height: 2rem;
             }
         }
     }

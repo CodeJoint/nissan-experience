@@ -10689,5 +10689,14 @@ h1 {
 
 .container .mainSection ._lists ._notificationsPool tbody {
   color: dodgerblue;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  line-height: 2rem;
+}
+
+.container .mainSection ._lists .userLogTable {
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  line-height: 2rem;
 }
 
