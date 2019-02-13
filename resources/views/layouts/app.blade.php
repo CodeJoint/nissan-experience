@@ -9,12 +9,6 @@
 
     <title>{{ config('app.name', 'Nissan Oculus') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-    <script type="text/javascript" src="/node_modules/moment/min/moment.min.js"></script>
-    <script type="text/javascript" src="/node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-    <link rel="stylesheet" href="/node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Sarabun" rel="stylesheet">
@@ -23,6 +17,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/third.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -78,13 +73,17 @@
     </div>
 
 </body>
-<script src="{{asset('js/jquery.min.js')}}"></script>
+<!-- Scripts -->
+<script src="{{ asset('js/app.js') }}" ></script>
+
 <script type="text/javascript">
     $(function () {
-        $('._datepicker').datetimepicker({
-            locale: 'es',
-            format: 'L'
-        });
+        setTimeout( function () {
+            $('._datetimepicker').datetimepicker({
+                locale: 'es',
+                format: 'L'
+            });
+        }, 1200)
     });
 </script>
 </html>

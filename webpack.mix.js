@@ -12,4 +12,6 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
+    .styles(['node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css'], 'public/css/third.css')
+    .minify('public/css/third.css')
    .sass('resources/sass/app.scss', 'public/css');

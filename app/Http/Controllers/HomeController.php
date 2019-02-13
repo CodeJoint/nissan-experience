@@ -30,6 +30,8 @@ class HomeController extends Controller
         $from   = date('Y-m-d' . ' 00:00:00', time());
         $to     = date('Y-m-d' . ' 24:60:60', time());
         $store_param    = request()->get('store') && request()->get('store') !== "" ? request()->get('store') : NULL;
+        $from    = request()->get('start') && request()->get('start') !== "" ? request()->get('start') : NULL;
+        $to      = request()->get('end') && request()->get('end') !== "" ? request()->get('end') : NULL;
         $full_log       = \App\Log::where('timestamp', '>', $from)
                                     ->where('timestamp', '<', $to)
                                     ->orderBy('timestamp', 'desc')
