@@ -17,3 +17,5 @@ Route::get('/dashboard', function () {
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/report', "LogController@report");

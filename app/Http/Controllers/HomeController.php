@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
+    private $factory = NULL;
     /**
      * Create a new controller instance.
      *
@@ -27,17 +28,18 @@ class HomeController extends Controller
         $devices_array  = [];
         $storeObject    = NULL;
         $session_length  = 0;
-        $from   = date('Y-m-d' . ' 00:00:00', time());
-        $to     = date('Y-m-d' . ' 24:60:60', time());
-        $store_param    = request()->get('store') && request()->get('store') !== "" ? request()->get('store') : NULL;
-        $from    = request()->get('start') && request()->get('start') !== "" ? request()->get('start') : NULL;
-        $to      = request()->get('end') && request()->get('end') !== "" ? request()->get('end') : NULL;
+
+        Carbon::setLocale('es_MX');
+
+        $store_param  = request()->get('store') && request()->get('store') !== "" ? request()->get('store') : NULL;
+        $from    = request()->get('from') && request()->get('from') !== "" ? request()->get('from') : Carbon::now()->format('Y/m/d');
+        $to      = request()->get('to') && request()->get('to') !== "" ? request()->get('to') : Carbon::now()->format('Y/m/d');
         $full_log       = \App\Log::where('timestamp', '>', $from)
                                     ->where('timestamp', '<', $to)
                                     ->orderBy('timestamp', 'desc')
                                     ->groupBy('timestamp')
-                                    ->take(10)->get();
-        $event_count    = $full_log->count();
+                                    ->take(999)->get();
+            $event_count    = $full_log->count();
         if($store_param){
             $storeObject    = \App\Store::where('identifier', $store_param)->first();
             if(!$storeObject)
@@ -46,8 +48,6 @@ class HomeController extends Controller
         }else{
             $devices        = \App\Device::all();
         }
-        if($devices->isEmpty())
-            $notifications[] = "No se ha registrado ningún dispositivo en esta tienda.";
      
         foreach ($devices as $myDevice){
 //            $myLogs = $myDevice->logs()->get();
@@ -65,9 +65,15 @@ class HomeController extends Controller
                                 })->count();
         $stores         = \App\Store::all(['name','identifier']);
         $store_count    = \App\Store::count();
-        $notifications[] = "Se han registrado ".count($devices)." dispositivos en {$store_count} tiendas.";
-        $notifications[] = "La sección con mayor interacción es: playContinuo";
-        return view('home')->with(compact(['session_length','full_log', 'storeObject', 'stores', 'store_count', 'device_count', 'devices', 'active_device_count', 'event_count', 'notifications']));
+        if($devices->isEmpty()){
+            $notifications[] = "No se ha registrado ningún dispositivo en esta tienda.";
+            $notifications[] = "Aún no se reciben eventos";
+        }else{
+            $notifications[] = "Se han registrado ".count($devices)." dispositivos en {$store_count} tiendas.";
+            $notifications[] = "La sección con mayor interacción es: playContinuo";
+            $notifications[] = "Se han recibido un total de $event_count eventos";
+        }
+        return view('home')->with(compact(['from','to','session_length','full_log', 'storeObject', 'stores', 'store_count', 'device_count', 'devices', 'active_device_count', 'event_count', 'notifications']));
     }
     
 }

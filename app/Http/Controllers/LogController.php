@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 class LogController extends Controller
 {
@@ -94,14 +96,36 @@ class LogController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * csv report
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function report()
     {
-        //
+        $headers = ["Fecha","Equipo","Nivel","Interacciones","Duración"];
+        $store_param  = request()->get('store') && request()->get('store') !== "" ? request()->get('store') : NULL;
+        $from    = request()->get('from') && request()->get('from') !== "" ? request()->get('from') : Carbon::now()->format('Y/m/d');
+        $to      = request()->get('to') && request()->get('to') !== "" ? request()->get('to') : Carbon::now()->format('Y/m/d');
+        $full_log       = \App\Log::where('timestamp', '>', $from)
+                            ->where('timestamp', '<', $to)
+                            ->orderBy('timestamp', 'desc')
+                            ->groupBy('timestamp')
+                            ->take(999)->get();
+                        
+        $filename = "../storage/app/public/{$store_param}.csv";
+        $handle = fopen($filename, 'w+');
+        fputcsv($handle, $headers);
+    
+        foreach($full_log->toArray() as &$row) {
+            fputcsv($handle, array_values(json_decode(json_encode($row), true)));
+        }
+    
+        fclose($handle);
+    
+        $request_headers = array(
+            'Content-Type' => 'text/csv',
+        );
+        return Response::download($filename, "{$store_param}.csv", $request_headers);
     }
 
     /**

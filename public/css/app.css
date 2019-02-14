@@ -10555,6 +10555,32 @@ h1 {
   margin: 2rem auto;
 }
 
+.table-fixed {
+  width: 100%;
+}
+
+.table-fixed tbody {
+  height: 20rem;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.table-fixed thead,
+.table-fixed tbody,
+.table-fixed tr,
+.table-fixed td,
+.table-fixed th {
+  display: block;
+}
+
+.table-fixed tbody td {
+  float: left;
+}
+
+.table-fixed thead tr th {
+  float: left;
+}
+
 .container::before {
   content: "";
   background-color: black;
@@ -10626,7 +10652,14 @@ h1 {
   text-transform: uppercase;
 }
 
+.container .mainSection h2 i {
+  font-size: 1.5rem;
+  vertical-align: sub;
+}
+
 .container .mainSection .dataCard {
+  width: calc(50% - 3rem);
+  min-width: 15rem;
   min-height: 13rem;
   display: inline-block;
   vertical-align: top;
@@ -10681,12 +10714,6 @@ h1 {
   display: table;
   width: 100%;
   table-layout: fixed;
-}
-
-.container .mainSection ._lists thead i,
-.container .mainSection ._lists tbody tr i {
-  font-size: 1.5rem;
-  vertical-align: sub;
 }
 
 .container .mainSection ._lists ._notificationsPool tbody {

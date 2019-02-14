@@ -50,6 +50,11 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    @if( Auth::user()->role === 'superadmin')
+                                        <a class="dropdown-item" href="{{ route('register') }}" >
+                                            Registro
+                                        </a>
+                                    @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -78,10 +83,22 @@
 
 <script type="text/javascript">
     $(function () {
+        var moment = window.moment;
         setTimeout( function () {
-            $('._datetimepicker').datetimepicker({
+            $('#datetimepicker_start').datetimepicker({
                 locale: 'es',
-                format: 'L'
+                format: 'YYYY/MM/DD',
+                allowInputToggle: true,
+                defaultDate: $('#datetimepicker_start').val() ? $('#datetimepicker_start').val() : moment().format('Y-MM-DD')
+            });
+            $('#datetimepicker_end').datetimepicker({
+                locale: 'es',
+                format: 'YYYY/MM/DD',
+                allowInputToggle: true,
+                defaultDate: $('#datetimepicker_end').val() ? $('#datetimepicker_end').val() : moment().format('Y-MM-DD')
+            });
+            $('#generateReport').click(function () {
+                window.open('report?store='+ $('#storeSelect').val()+'&from='+ $('#datetimepicker_start').val()+'&to='+ $('#datetimepicker_end').val(), '_blank');
             });
         }, 1200)
     });

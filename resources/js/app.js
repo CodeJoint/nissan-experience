@@ -7,6 +7,7 @@
 
 require('./bootstrap');
 require('eonasdan-bootstrap-datetimepicker');
+window.moment = require('moment');
 
 window.Vue = require('vue');
 
