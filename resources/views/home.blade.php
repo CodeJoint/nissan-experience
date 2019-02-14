@@ -111,12 +111,12 @@
                                     @if(!empty($notifications))
                                         @foreach($notifications as $log_entry)
                                             <tr>
-                                                <td>{{$log_entry}}</td>
+                                                <td class="col-12">{{$log_entry}}</td>
                                             </tr>
                                         @endforeach
                                     @else
                                         <tr>
-                                            <td>No hay notificaciones</td>
+                                            <td class="col-12">No hay notificaciones</td>
                                         </tr>
                                     @endif
                                 </tbody>

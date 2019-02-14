@@ -85,21 +85,36 @@
     $(function () {
         var moment = window.moment;
         setTimeout( function () {
+
+            var value_from = null;
+            var value_to = null;
+
             $('#datetimepicker_start').datetimepicker({
                 locale: 'es',
                 format: 'YYYY/MM/DD',
                 allowInputToggle: true,
                 defaultDate: $('#datetimepicker_start').val() ? $('#datetimepicker_start').val() : moment().format('Y-MM-DD')
+            })
+             .on('dp.change dp.hide', function(event){
+                 console.log(event);
+                 value_from = event.date;
             });
+
             $('#datetimepicker_end').datetimepicker({
                 locale: 'es',
                 format: 'YYYY/MM/DD',
                 allowInputToggle: true,
                 defaultDate: $('#datetimepicker_end').val() ? $('#datetimepicker_end').val() : moment().format('Y-MM-DD')
+            })
+             .on('dp.change dp.hide', function(event){
+                console.log(event);
+                value_to = event.date;
             });
+
             $('#generateReport').click(function () {
-                window.open('report?store='+ $('#storeSelect').val()+'&from='+ $('#datetimepicker_start').val()+'&to='+ $('#datetimepicker_end').val(), '_blank');
+                window.open('report?store='+ $('#storeSelect').val()+'&from='+ value_from.format('Y-m-d')+'&to='+ value_to.format('Y-m-d'), '_blank');
             });
+
         }, 1200)
     });
 </script>
