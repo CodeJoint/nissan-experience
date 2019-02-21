@@ -104,8 +104,8 @@ class LogController extends Controller
     {
         $headers = ["Fecha","Equipo","Nivel","Interacciones","Duración"];
         $store_param  = request()->get('store') && request()->get('store') !== "" ? request()->get('store') : NULL;
-        $from    = request()->get('from') && request()->get('from') !== "" ? request()->get('from') : Carbon::now()->format('Y/m/d');
-        $to      = request()->get('to') && request()->get('to') !== "" ? request()->get('to') : Carbon::now()->format('Y/m/d');
+        $from    = request()->get('from') && request()->get('from') !== "" ? request()->get('from') : Carbon::now()->format('Y-m-d');
+        $to      = request()->get('to') && request()->get('to') !== "" ? request()->get('to') : Carbon::now()->format('Y-m-d');
         $full_log       = \App\Log::where('timestamp', '>', $from)
                             ->where('timestamp', '<', $to)
                             ->orderBy('timestamp', 'desc')
@@ -116,8 +116,9 @@ class LogController extends Controller
         $handle = fopen($filename, 'w+');
         fputcsv($handle, $headers);
     
+        
         foreach($full_log->toArray() as &$row) {
-            fputcsv($handle, array_values(json_decode(json_encode($row), true)));
+            fputcsv($handle, array_values($row));
         }
     
         fclose($handle);

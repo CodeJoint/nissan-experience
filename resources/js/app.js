@@ -6,7 +6,7 @@
  */
 
 require('./bootstrap');
-require('eonasdan-bootstrap-datetimepicker');
+
 window.moment = require('moment');
 
 window.Vue = require('vue');
@@ -32,4 +32,49 @@ Vue.component('doughnut-chart', require('./components/ChartComponent.vue').defau
 
 const app = new Vue({
     el: '#app'
+});
+
+window.moment = window.moment;
+
+$(function () {
+    $.noConflict();
+    setTimeout( function () {
+
+        var value_from = null;
+        var value_to = null;
+
+        $('#datepicker_start').datepicker({
+            locale: 'es',
+            format: 'yyyy-mm-dd',
+            showOnFocus: true,
+            keyboardNavigation: true,
+            value: $('#datetimepicker_start').val() ? $('#datetimepicker_start').val() : moment().format('Y-MM-DD'),
+            change: function (event) {
+                value_to = event.date;
+            },
+            close: function (event) {
+                value_to = event.date;
+            }
+        });
+
+        $('#datepicker_end').datepicker({
+            locale: 'es',
+            format: 'yyyy-mm-dd',
+            showOnFocus: true,
+            keyboardNavigation: true,
+            value: $('#datetimepicker_end').val() ? $('#datetimepicker_end').val() : moment().format('Y-MM-DD'),
+            change: function (event) {
+                value_to = event.date;
+            },
+            close: function (event) {
+                value_to = event.date;
+            }
+        });
+
+        $('#generateReport').click(function () {
+            window.open('report?store='+ $('#storeSelect').val()+'&from='+ value_from.format('Y-m-d')+'&to='+ value_to.format('Y-m-d'), '_blank');
+        });
+
+    }, 5200);
+
 });

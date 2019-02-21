@@ -25,24 +25,10 @@
                             </div>
                         </div>
                         <div class="each-filter col">
-                            <div class="form-group">
-                                <div class='input-group date _datepicker' id='datetimepicker_start'>
-                                    <input type='text' value="{{ $from }}" name="from" class="form-control" placeholder="AAAA/MM/DD" />
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">event</i>
-                                    </span>
-                                </div>
-                            </div>
+                            <input type='text'  width="100%" value="{{ $from }}" name="from" id="datepicker_start" placeholder="AAAA/MM/DD" />
                         </div>
                         <div class="each-filter col">
-                            <div class="form-group">
-                                <div class='input-group date _datepicker' id='datetimepicker_end'>
-                                    <input type='text' value="{{ $to }}" name="to" class="form-control" placeholder="AAAA/MM/DD" />
-                                    <span class="input-group-addon">
-                                        <i class="material-icons">event</i>
-                                    </span>
-                                </div>
-                            </div>
+                            <input type='text'  width="100%" value="{{ $to }}" name="to" id="datepicker_end" placeholder="AAAA/MM/DD" />
                         </div>
                         <div class="each-filter col">
                             <div class="form-group">
