@@ -26,6 +26,7 @@
     "dependencies": {
         "chart.js": "^2.7.3",
         "eonasdan-bootstrap-datetimepicker": "^4.17.47",
+        "gijgo": "^1.9.12",
         "moment": "^2.24.0",
         "momentjs": "^2.0.0"
     }
