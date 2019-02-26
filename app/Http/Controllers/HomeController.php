@@ -59,7 +59,9 @@ class HomeController extends Controller
 //            $log_json = json_decode($log_entry->event['actions']->timeSpent, true);
             $session_length += $log_entry->event['actions']->timeSpent;
         }
-        $session_length = $session_length/$event_count;
+        if($session_length && $event_count)
+            $session_length = $session_length/$event_count;
+        
         $device_count   = $devices->count();
         $active_device_count   = \App\Device::whereHas('logs', function ($query) use( $devices_array ) {
 //                                    $query->where('device_id', 'IN', $devices_array);
