@@ -23,6 +23,7 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('doughnut-chart', require('./components/ChartComponent.vue').default);
+Vue.component('line-chart', require('./components/MultiChartComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -40,15 +41,14 @@ $(function () {
     $.noConflict();
     setTimeout( function () {
 
-        var value_from = null;
-        var value_to = null;
+        var value_from = $('#datepicker_start').val() ? $('#datepicker_start').val() : moment().format('Y-MM-DD');
+        var value_to = $('#datepicker_end').val() ? $('#datepicker_end').val() : moment().format('Y-MM-DD');
 
         $('#datepicker_start').datepicker({
-            locale: 'es',
             format: 'yyyy-mm-dd',
             showOnFocus: true,
             keyboardNavigation: true,
-            value: $('#datetimepicker_start').val() ? $('#datetimepicker_start').val() : moment().format('Y-MM-DD'),
+            value: value_from,
             change: function (event) {
                 value_to = event.date;
             },
@@ -58,11 +58,10 @@ $(function () {
         });
 
         $('#datepicker_end').datepicker({
-            locale: 'es',
             format: 'yyyy-mm-dd',
             showOnFocus: true,
             keyboardNavigation: true,
-            value: $('#datetimepicker_end').val() ? $('#datetimepicker_end').val() : moment().format('Y-MM-DD'),
+            value: value_to,
             change: function (event) {
                 value_to = event.date;
             },
@@ -72,9 +71,28 @@ $(function () {
         });
 
         $('#generateReport').click(function () {
-            window.open('report?store='+ $('#storeSelect').val()+'&from='+ value_from.format('Y-m-d')+'&to='+ value_to.format('Y-m-d'), '_blank');
+            window.open('report?store='+ $('#storeSelect').val()+'&from='+ value_from.format('Y-MM-DD')+'&to='+ value_to.format('Y-MM-DD'), '_blank');
         });
 
-    }, 5200);
+        $('#storeSelect').dropdown();
+
+        // Graph buttons
+
+        window.dialog = $("#dialog").dialog({
+            resizable: true,
+            uiLibrary: 'materialdesign',
+            modal: true,
+            autoOpen: false
+        });
+
+        $('#inter_chart').on('click', function(){
+            dialog.open();
+        });
+
+        $('#level_chart').on('click', function(){
+            dialog.open();
+        });
+
+    }, 1200);
 
 });

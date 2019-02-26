@@ -20,4 +20,5 @@ mix.js('resources/js/app.js', 'public/js')
     .styles([
         'node_modules/gijgo/css/gijgo.min.css'
     ], 'public/css/third.css')
+    .copyDirectory('node_modules/gijgo/fonts', 'public/fonts')
     .minify(['public/css/third.css','public/js/third.js']);

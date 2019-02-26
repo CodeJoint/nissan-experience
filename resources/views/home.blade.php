@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h2>Reporte de eventos detallado</h2>
-                        <p>Elige una tienda y rango de fechas para filtrar los resultados.</p>
+                        <p>Elige una tienda y rango de fechas para filtrar los resultados y poder generar los reportes y gráficas.</p>
                     </div>
                 </div>
                 <form action="{{ url('home') }}" method="GET" id="filterForm" style="width: 100%;">
@@ -25,18 +25,16 @@
                             </div>
                         </div>
                         <div class="each-filter col">
-                            <input type='text'  width="100%" value="{{ $from }}" name="from" id="datepicker_start" placeholder="AAAA/MM/DD" />
+                            <input type='text'  width="100%" value="{{ $from }}" name="from" id="datepicker_start" placeholder="AAAA-MM-DD" />
                         </div>
                         <div class="each-filter col">
-                            <input type='text'  width="100%" value="{{ $to }}" name="to" id="datepicker_end" placeholder="AAAA/MM/DD" />
+                            <input type='text'  width="100%" value="{{ $to }}" name="to" id="datepicker_end" placeholder="AAAA-MM-DD" />
                         </div>
                         <div class="each-filter col">
                             <div class="form-group">
                                 <div class='input-group'>
-                                    <button class="btn btn-primary btn-block" type="submit">Filtrar</button>
-                                    </br>
-                                    </br>
-                                    <a id="generateReport" class="btn btn-success btn-block" type="button">Descargar .csv</a>
+                                    <button class="btn btn-primary btn-block filterButtons" type="submit">Filtrar</button>
+                                    <a id="generateReport" class="btn btn-success btn-block filterButtons" type="button">Descargar .csv</a>
                                 </div>
                             </div>
                         </div>
@@ -49,7 +47,7 @@
 
                                     <thead>
                                         <tr>
-                                            <th class="col-2">Fecha</th>
+                                            <th class="col-3">Fecha</th>
                                             <th class="col-2">Equipo</th>
                                             <th class="col-2">Nivel</th>
                                             <th class="col-2">Interacciones</th>
@@ -62,7 +60,7 @@
                                     @if(!empty($full_log))
                                         @foreach($full_log as $log_entry)
                                             <tr>
-                                                <td class="col-2">{{ $log_entry->timestamp }}</td>
+                                                <td class="col-3">{{ $log_entry->timestamp }}</td>
                                                 <td class="col-2">{{ $log_entry->device_id }}</td>
                                                 <td class="col-2"><strong>{{ $log_entry->event['name'] }}</strong></td>
                                                 <td class="col-2">{{ $log_entry->event['actions']->interaction }}</td>
@@ -113,7 +111,7 @@
                     </div>
 
                     <div class="col">
-                        <h2>KPI</h2>
+                        <h2>KPI y Gráficas</h2>
 
                         <section class="card dataCard">
 
@@ -121,9 +119,9 @@
                                 <div class="card-title">Dispositivos</div>
                                 <div class="card-content">
                                     <doughnut-chart
-                                            :labels="['Activos','Registrados']"
-                                            :values="[{{$active_device_count}},{{ $device_count-$active_device_count }}]"
-                                    >
+                                        :labels="['Activos','Registrados']"
+                                        :values="[{{$active_device_count}},{{ $device_count-$active_device_count }}]"
+                                        >
                                     </doughnut-chart>
                                     <div class="center-icon under">
                                         <i class="material-icons">
@@ -165,17 +163,18 @@
                                     </i>
                                 </div>
                                 <div class="card-content">
-                                    <h3>{{ round($session_length, 1) }} seg</h3>
+                                    <h3>{{ round($session_length/60, 1) }} min</h3>
                                 </div>
                             </div>
                         </section>
 
                         <section class="card dataCard">
                             <div class="card-body" >
-                                <div class="card-title">Gráficas</div>
+                                <div class="card-title"><i class="material-icons">multiline_chart</i> Gráficas</div>
+                                <br>
                                 <div class="card-content">
-                                    <button class="btn btn-primary btn-block">Interacciones/Tienda</button>
-                                    <button class="btn btn-primary btn-block">Nivel/Tiempo</button>
+                                    <button id="inter_chart" class="btn btn-primary btn-block filterButtons fillWidth">Interacciones/Tienda</button>
+                                    <button id="level_chart" class="btn btn-primary btn-block filterButtons fillWidth">Nivel/Tiempo</button>
                                 </div>
                             </div>
 
@@ -183,6 +182,19 @@
 
                     </div>
 
+                    <div id="dialog" title="Gráficas" width="500" style="display: none;">
+                        <div data-role="body">
+                            Loading...
+                            <line-chart
+                                :values="[]"
+                                :labels="[]"
+                                >
+                            </line-chart>
+                        </div>
+                        <div data-role="footer">
+                            <button class="gj-button-md" onclick="dialog.close()">OK</button>
+                        </div>
+                    </div>
 
                 </section>
 

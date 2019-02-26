@@ -2,6 +2,7 @@
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
+
 // Variables
 @import 'variables';
 
@@ -129,6 +130,22 @@ h1   { font-size: 2px; font-size: 2rem; } /* =24px */
     }
     .mainSection{
         margin-left: 8rem;
+        .filterButtons{
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            padding: 0.5rem 1rem;
+            color: white;
+        }
+        .gj-dropdown{
+            button{
+                width: 100%;
+            }
+        }
+        .fillWidth{
+            width: 88%;
+            margin: 1rem auto;
+        }
         h1{
             font-size: 2.8rem;
             margin: 1rem 0;

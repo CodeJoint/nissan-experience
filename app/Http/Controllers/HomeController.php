@@ -32,8 +32,8 @@ class HomeController extends Controller
         Carbon::setLocale('es_MX');
 
         $store_param  = request()->get('store') && request()->get('store') !== "" ? request()->get('store') : NULL;
-        $from    = request()->get('from') && request()->get('from') !== "" ? request()->get('from') : Carbon::now()->format('Y/m/d');
-        $to      = request()->get('to') && request()->get('to') !== "" ? request()->get('to') : Carbon::now()->format('Y/m/d');
+        $from    = request()->get('from') && request()->get('from') !== "" ? request()->get('from') : Carbon::now()->format('Y-m-d');
+        $to      = request()->get('to') && request()->get('to') !== "" ? request()->get('to') : Carbon::now()->format('Y-m-d');
         $full_log       = \App\Log::where('timestamp', '>', $from)
                                     ->where('timestamp', '<', $to)
                                     ->orderBy('timestamp', 'desc')
@@ -59,6 +59,7 @@ class HomeController extends Controller
 //            $log_json = json_decode($log_entry->event['actions']->timeSpent, true);
             $session_length += $log_entry->event['actions']->timeSpent;
         }
+        $session_length = $session_length/$event_count;
         $device_count   = $devices->count();
         $active_device_count   = \App\Device::whereHas('logs', function ($query) use( $devices_array ) {
 //                                    $query->where('device_id', 'IN', $devices_array);

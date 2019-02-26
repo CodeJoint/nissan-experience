@@ -1802,6 +1802,48 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MultiChartComponent.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/MultiChartComponent.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var chart_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! chart.js */ "./node_modules/chart.js/src/chart.js");
+/* harmony import */ var chart_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(chart_js__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['values', 'labels'],
+  created: function created() {//
+  },
+  mounted: function mounted() {
+    console.log('Component mounted.');
+    var data = {
+      datasets: [{
+        data: this.values,
+        backgroundColor: ['#4187ed', '#999999'],
+        borderWidth: 0
+      }],
+      // These labels appear in the legend and in the tooltips when hovering different arcs
+      labels: this.labels
+    };
+    var ctx = document.getElementById("myLineChart").getContext("2d");
+    var myLineChart = new chart_js__WEBPACK_IMPORTED_MODULE_0___default.a(ctx, {
+      type: 'line',
+      data: data,
+      options: {}
+    });
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/bootstrap/dist/js/bootstrap.js":
 /*!*****************************************************!*\
   !*** ./node_modules/bootstrap/dist/js/bootstrap.js ***!
@@ -69476,6 +69518,32 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MultiChartComponent.vue?vue&type=template&id=ab394b86&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/MultiChartComponent.vue?vue&type=template&id=ab394b86& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("canvas", {
+    attrs: { id: "myLineChart", width: "80", height: "40" }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js":
 /*!********************************************************************!*\
   !*** ./node_modules/vue-loader/lib/runtime/componentNormalizer.js ***!
@@ -81550,6 +81618,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('doughnut-chart', __webpack_require__(/*! ./components/ChartComponent.vue */ "./resources/js/components/ChartComponent.vue").default);
+Vue.component('line-chart', __webpack_require__(/*! ./components/MultiChartComponent.vue */ "./resources/js/components/MultiChartComponent.vue").default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -81563,14 +81632,13 @@ window.moment = window.moment;
 $(function () {
   $.noConflict();
   setTimeout(function () {
-    var value_from = null;
-    var value_to = null;
+    var value_from = $('#datepicker_start').val() ? $('#datepicker_start').val() : moment().format('Y-MM-DD');
+    var value_to = $('#datepicker_end').val() ? $('#datepicker_end').val() : moment().format('Y-MM-DD');
     $('#datepicker_start').datepicker({
-      locale: 'es',
       format: 'yyyy-mm-dd',
       showOnFocus: true,
       keyboardNavigation: true,
-      value: $('#datetimepicker_start').val() ? $('#datetimepicker_start').val() : moment().format('Y-MM-DD'),
+      value: value_from,
       change: function change(event) {
         value_to = event.date;
       },
@@ -81579,11 +81647,10 @@ $(function () {
       }
     });
     $('#datepicker_end').datepicker({
-      locale: 'es',
       format: 'yyyy-mm-dd',
       showOnFocus: true,
       keyboardNavigation: true,
-      value: $('#datetimepicker_end').val() ? $('#datetimepicker_end').val() : moment().format('Y-MM-DD'),
+      value: value_to,
       change: function change(event) {
         value_to = event.date;
       },
@@ -81592,9 +81659,23 @@ $(function () {
       }
     });
     $('#generateReport').click(function () {
-      window.open('report?store=' + $('#storeSelect').val() + '&from=' + value_from.format('Y-m-d') + '&to=' + value_to.format('Y-m-d'), '_blank');
+      window.open('report?store=' + $('#storeSelect').val() + '&from=' + value_from.format('Y-MM-DD') + '&to=' + value_to.format('Y-MM-DD'), '_blank');
     });
-  }, 5200);
+    $('#storeSelect').dropdown(); // Graph buttons
+
+    window.dialog = $("#dialog").dialog({
+      resizable: true,
+      uiLibrary: 'materialdesign',
+      modal: true,
+      autoOpen: false
+    });
+    $('#inter_chart').on('click', function () {
+      dialog.open();
+    });
+    $('#level_chart').on('click', function () {
+      dialog.open();
+    });
+  }, 1200);
 });
 
 /***/ }),
@@ -81726,6 +81807,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/MultiChartComponent.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/MultiChartComponent.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _MultiChartComponent_vue_vue_type_template_id_ab394b86___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./MultiChartComponent.vue?vue&type=template&id=ab394b86& */ "./resources/js/components/MultiChartComponent.vue?vue&type=template&id=ab394b86&");
+/* harmony import */ var _MultiChartComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./MultiChartComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/MultiChartComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _MultiChartComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _MultiChartComponent_vue_vue_type_template_id_ab394b86___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _MultiChartComponent_vue_vue_type_template_id_ab394b86___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/MultiChartComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/MultiChartComponent.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/MultiChartComponent.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MultiChartComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./MultiChartComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MultiChartComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_MultiChartComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/MultiChartComponent.vue?vue&type=template&id=ab394b86&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/MultiChartComponent.vue?vue&type=template&id=ab394b86& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MultiChartComponent_vue_vue_type_template_id_ab394b86___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./MultiChartComponent.vue?vue&type=template&id=ab394b86& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/MultiChartComponent.vue?vue&type=template&id=ab394b86&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MultiChartComponent_vue_vue_type_template_id_ab394b86___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_MultiChartComponent_vue_vue_type_template_id_ab394b86___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/sass/app.scss":
 /*!*********************************!*\
   !*** ./resources/sass/app.scss ***!
@@ -81744,8 +81894,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/johnfalcon/Sites/nissan-experience/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/johnfalcon/Sites/nissan-experience/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/Paulina/Sites/nissan-experience/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/Paulina/Sites/nissan-experience/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
