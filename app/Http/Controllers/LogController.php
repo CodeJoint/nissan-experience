@@ -133,7 +133,7 @@ class LogController extends Controller
         $request_headers = array(
             'Content-Type' => 'text/csv',
         );
-        return Response::download($filename, "{$store_param}.csv", $request_headers);
+        return Response::download($filename, "{$store_param}-{$from}-{$to}.csv", $request_headers);
     }
 
     /**

@@ -184,10 +184,10 @@
 
                     <div id="dialog" title="Gráficas" width="500" style="display: none;">
                         <div data-role="body">
-                            Loading...
+
                             <line-chart
-                                :values="[]"
-                                :labels="[]"
+                                :values="{{ json_encode($chart_values) }}"
+                                :labels="['Santiago','Concepción']"
                                 >
                             </line-chart>
                         </div>

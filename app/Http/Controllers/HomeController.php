@@ -47,6 +47,9 @@ class HomeController extends Controller
     
         $full_log       = \App\Log::where('timestamp', '>', $from)
                                     ->where('timestamp', '<', $to)
+                                    ->when($store_param, function($q){
+//                                        $q->where();
+                                    })
                                     ->orderBy('timestamp', 'desc')
                                     ->groupBy('timestamp')
                                     ->take(999)->get();
@@ -63,7 +66,7 @@ class HomeController extends Controller
         $device_count   = $devices->count();
         $active_device_count   = \App\Device::whereHas('logs')->count();
         $stores         = \App\Store::all(['name','identifier']);
-
+        $chart_values = [[23,2],[25,6]];
         if($devices->isEmpty()){
             $notifications[] = "No se ha registrado ningún dispositivo en esta tienda.";
             $notifications[] = "Aún no se reciben eventos";
@@ -72,7 +75,7 @@ class HomeController extends Controller
             $notifications[] = "La sección con mayor interacción es: playContinuo";
             $notifications[] = "Se han recibido un total de {$event_count} eventos de {$from} a {$to}";
         }
-        return view('home')->with(compact(['from','to','session_length','full_log', 'storeObject', 'stores', 'device_count', 'devices', 'active_device_count', 'event_count', 'notifications']));
+        return view('home')->with(compact(['from','to','session_length','full_log', 'storeObject', 'stores', 'device_count', 'devices', 'active_device_count', 'event_count', 'notifications', 'chart_values']));
     }
     
 }
