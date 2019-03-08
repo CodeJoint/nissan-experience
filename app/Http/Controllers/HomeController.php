@@ -26,6 +26,12 @@ class HomeController extends Controller
     {
         $notifications  = [];
         $devices_array  = [];
+        $chart_final    = [
+            "interaction" => [
+                "labels" => ["Santiago","Concepción"],
+                "values" => [0, 0]
+            ]
+        ];
         $storeObject    = NULL;
         $session_length  = 0;
 
@@ -66,7 +72,27 @@ class HomeController extends Controller
         $device_count   = $devices->count();
         $active_device_count   = \App\Device::whereHas('logs')->count();
         $stores         = \App\Store::all(['name','identifier']);
-        $chart_values = [[23,2],[25,6]];
+        foreach ($stores as $index => $myStore){
+            $chart_final['interaction']['labels'][] = $myStore->name;
+            $laStore = \App\Store::where('identifier', $myStore->identifier)->first();
+            $devices = $laStore->devices()->get();
+            $devices_ids = array_column($devices->toArray(), 'device_id');
+            $internal_logs = \App\Log::when(!empty($devices_ids), function($q) use ($devices_ids){
+                                            $q->whereIn('device_id', $devices_ids);
+                                        })
+                                        ->where('timestamp', '>', $from)
+                                        ->where('timestamp', '<', $to)
+                                        ->orderBy('timestamp', 'desc')
+                                        ->groupBy('timestamp')
+                                        ->take(9999)->get(['event']);
+            $leArray = array_column($internal_logs->toArray(), 'event');
+            array_walk($leArray, function(&$element) use (&$chart_final, $index){
+                $chart_final['interaction']['values'][$index] += $element['actions']->interaction;
+            });
+            $internal_logs  = [];
+
+        }
+
         if($devices->isEmpty()){
             $notifications[] = "No se ha registrado ningún dispositivo en esta tienda.";
             $notifications[] = "Aún no se reciben eventos";
@@ -75,7 +101,7 @@ class HomeController extends Controller
             $notifications[] = "La sección con mayor interacción es: playContinuo";
             $notifications[] = "Se han recibido un total de {$event_count} eventos de {$from} a {$to}";
         }
-        return view('home')->with(compact(['from','to','session_length','full_log', 'storeObject', 'stores', 'device_count', 'devices', 'active_device_count', 'event_count', 'notifications', 'chart_values']));
+        return view('home')->with(compact(['from','to','session_length','full_log', 'storeObject', 'stores', 'device_count', 'devices', 'active_device_count', 'event_count', 'notifications', 'chart_final']));
     }
     
 }

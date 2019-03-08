@@ -16,13 +16,13 @@
                 labels: this.labels,
                 datasets: [{
                     label: "Número de usuarios por tienda",
-                    data: []
+                    data: this.values
                 }],
             };
             this.values.forEach(function(element){
                 data.datasets[0].data.push({0:element[0], 1:element[1]});
             });
-            console.log(data.datasets[0].data);
+            console.log(JSON.stringify(data.datasets[0].data));
             //
             // backgroundColor: ['#4187ed', '#999999'],
             //     borderWidth: 0

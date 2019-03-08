@@ -186,7 +186,7 @@
                         <div data-role="body">
 
                             <line-chart
-                                :values="{{ json_encode($chart_values) }}"
+                                :values="{{ json_encode($chart_final['interaction']['values']) }}"
                                 :labels="['Santiago','Concepción']"
                                 >
                             </line-chart>
