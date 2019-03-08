@@ -81659,7 +81659,8 @@ $(function () {
       }
     });
     $('#generateReport').click(function () {
-      window.open('report?store=' + $('#storeSelect').val() + '&from=' + value_from.format('Y-MM-DD') + '&to=' + value_to.format('Y-MM-DD'), '_blank');
+      console.log("generate report");
+      window.open('report?store=' + $('#storeSelect').val() + '&from=' + moment(value_from).format('Y-MM-DD') + '&to=' + moment(value_to).format('Y-MM-DD'), '_blank');
     });
     $('#storeSelect').dropdown(); // Graph buttons
 
@@ -81894,8 +81895,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/Paulina/Sites/nissan-experience/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/Paulina/Sites/nissan-experience/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/johnfalcon/Sites/nissan-experience/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/johnfalcon/Sites/nissan-experience/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

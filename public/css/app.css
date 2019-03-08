@@ -10910,3 +10910,14 @@ h1 {
   line-height: 2rem;
 }
 
+.container .mainSection .userLogTable {
+  width: 99%;
+}
+
+.container .mainSection .userLogTable tbody {
+  background-color: white;
+  border-width: 0 1px 1px;
+  border-color: #dbdbdb;
+  border-style: solid;
+}
+

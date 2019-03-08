@@ -106,21 +106,28 @@ class LogController extends Controller
         $store_param  = request()->get('store') && request()->get('store') !== "" ? request()->get('store') : NULL;
         $from    = request()->get('from') && request()->get('from') !== "" ? request()->get('from') : Carbon::now()->format('Y-m-d');
         $to      = request()->get('to') && request()->get('to') !== "" ? request()->get('to') : Carbon::now()->format('Y-m-d');
-        $full_log       = \App\Log::where('timestamp', '>', $from)
-                            ->where('timestamp', '<', $to)
-                            ->orderBy('timestamp', 'desc')
-                            ->groupBy('timestamp')
-                            ->take(999)->get();
-                        
         $filename = "../storage/app/public/{$store_param}.csv";
+        
+        $full_log       = \App\Log::where('timestamp', '>', $from)
+                                    ->where('timestamp', '<', $to)
+                                    ->orderBy('timestamp', 'desc')
+                                    ->groupBy('timestamp')
+                                    ->take(999)->get();
+                        
         $handle = fopen($filename, 'w+');
         fputcsv($handle, $headers);
     
-        
-        foreach($full_log->toArray() as &$row) {
-            fputcsv($handle, array_values($row));
+        foreach($full_log as &$row) {
+            $event = $row->event;
+            $fake_array = [
+                        "fecha" => $row->timestamp,
+                        "equipo" => $row->device_id,
+                        "nivel" => $event['actions']->name,
+                        "interacciones" => $event['actions']->interaction,
+                        "duracion" => $event['actions']->timeSpent
+                ];
+            fputcsv($handle, array_values($fake_array));
         }
-    
         fclose($handle);
     
         $request_headers = array(

@@ -71,7 +71,8 @@ $(function () {
         });
 
         $('#generateReport').click(function () {
-            window.open('report?store='+ $('#storeSelect').val()+'&from='+ value_from.format('Y-MM-DD')+'&to='+ value_to.format('Y-MM-DD'), '_blank');
+            console.log("generate report");
+            window.open('report?store='+ $('#storeSelect').val()+'&from='+ moment(value_from).format('Y-MM-DD')+'&to='+ moment(value_to).format('Y-MM-DD'), '_blank');
         });
 
         $('#storeSelect').dropdown();

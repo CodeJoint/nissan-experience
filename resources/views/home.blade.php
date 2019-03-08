@@ -17,7 +17,7 @@
                         <div class="each-filter col">
                             <div class="form-group">
                                 <select class="form-control" id="storeSelect" name="store">
-                                    <option value="">Elige una tienda</option>
+                                    <option value="">Todas las tiendas</option>
                                     @foreach($stores as $myStore)
                                         <option value="{{$myStore->identifier}}" {{ set_active('/', $myStore->identifier, 'selected') }}>{{ $myStore->name }}</option>
                                     @endforeach
@@ -46,8 +46,8 @@
                                 <table class="userLogTable table table-striped table-fixed">
 
                                     <thead>
-                                        <tr>
-                                            <th class="col-3">Fecha</th>
+                                        <tr class="clearfix">
+                                            <th class="col-2">Fecha</th>
                                             <th class="col-2">Equipo</th>
                                             <th class="col-2">Nivel</th>
                                             <th class="col-2">Interacciones</th>
@@ -60,7 +60,7 @@
                                     @if(!empty($full_log))
                                         @foreach($full_log as $log_entry)
                                             <tr>
-                                                <td class="col-3">{{ $log_entry->timestamp }}</td>
+                                                <td class="col-2">{{ $log_entry->timestamp }}</td>
                                                 <td class="col-2">{{ $log_entry->device_id }}</td>
                                                 <td class="col-2"><strong>{{ $log_entry->event['name'] }}</strong></td>
                                                 <td class="col-2">{{ $log_entry->event['actions']->interaction }}</td>
@@ -163,7 +163,7 @@
                                     </i>
                                 </div>
                                 <div class="card-content">
-                                    <h3>{{ round($session_length/60, 1) }} min</h3>
+                                    <h3>{{ round($session_length, 2) }} seg</h3>
                                 </div>
                             </div>
                         </section>
