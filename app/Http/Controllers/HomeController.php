@@ -28,8 +28,8 @@ class HomeController extends Controller
         $devices_array  = [];
         $chart_final    = [
             "interaction" => [
-                "labels" => ["Santiago","Concepción"],
-                "values" => [0, 0]
+                "labels" => [],
+                "values" => []
             ]
         ];
         $storeObject    = NULL;
@@ -59,24 +59,28 @@ class HomeController extends Controller
                                     ->orderBy('timestamp', 'desc')
                                     ->groupBy('timestamp')
                                     ->take(999)->get();
-        $event_count    = $full_log->count();
-         
-            foreach ($full_log as $log_entry){
-    //            $events = $log_entry->event;
-    //            $log_json = json_decode($log_entry->event['actions']->timeSpent, true);
-                $session_length += $log_entry->event['actions']->timeSpent;
-            }
+            $logArray  = $full_log->toArray();
+            array_walk($logArray, function(&$element1, $key) use($session_length){
+                $session_length += $element1->event['actions']->timeSpent;
+            });
+            
+            $event_count    = $full_log->count();
+            
         if($session_length && $event_count)
             $session_length = $session_length/$event_count;
         
         $device_count   = $devices->count();
         $active_device_count   = \App\Device::whereHas('logs')->count();
+        
         $stores         = \App\Store::all(['name','identifier']);
+        
         foreach ($stores as $index => $myStore){
+            
             $chart_final['interaction']['labels'][] = $myStore->name;
             $laStore = \App\Store::where('identifier', $myStore->identifier)->first();
             $devices = $laStore->devices()->get();
             $devices_ids = array_column($devices->toArray(), 'device_id');
+            
             $internal_logs = \App\Log::when(!empty($devices_ids), function($q) use ($devices_ids){
                                             $q->whereIn('device_id', $devices_ids);
                                         })
@@ -85,11 +89,11 @@ class HomeController extends Controller
                                         ->orderBy('timestamp', 'desc')
                                         ->groupBy('timestamp')
                                         ->take(9999)->get(['event']);
+            
             $leArray = array_column($internal_logs->toArray(), 'event');
             array_walk($leArray, function(&$element) use (&$chart_final, $index){
                 $chart_final['interaction']['values'][$index] += $element['actions']->interaction;
             });
-            $internal_logs  = [];
 
         }
 
@@ -101,6 +105,7 @@ class HomeController extends Controller
             $notifications[] = "La sección con mayor interacción es: playContinuo";
             $notifications[] = "Se han recibido un total de {$event_count} eventos de {$from} a {$to}";
         }
+        
         return view('home')->with(compact(['from','to','session_length','full_log', 'storeObject', 'stores', 'device_count', 'devices', 'active_device_count', 'event_count', 'notifications', 'chart_final']));
     }
     
