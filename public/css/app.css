@@ -10932,3 +10932,7 @@ h1 {
   border-style: solid;
 }
 
+.container .mainSection .userLogTable th {
+  min-width: 100px;
+}
+

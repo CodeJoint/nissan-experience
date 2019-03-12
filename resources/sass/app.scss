@@ -248,6 +248,9 @@ h1   { font-size: 2px; font-size: 2rem; } /* =24px */
                 border-color: #dbdbdb;
                 border-style: solid;
             }
+            th{
+                min-width: 100px;
+            }
         }
     }
 }

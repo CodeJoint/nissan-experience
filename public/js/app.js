@@ -69517,7 +69517,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("canvas", { attrs: { id: "myChart", width: "80", height: "40" } })
+  return _c("canvas", { attrs: { id: "myChart", width: "400", height: "220" } })
 }
 var staticRenderFns = []
 render._withStripped = true

@@ -66,7 +66,7 @@
                                                 <td class="col-2">{{ $log_entry->level_count }}</td>
                                                 <td class="col-2"><strong>{{ $log_entry->levels_concat }}</strong></td>
                                                 <td class="col-2">{{ $log_entry->event['actions']->interaction }}</td>
-                                                <td class="col-2">{{ round($log_entry->timeSpent, 1) }} seg</td>
+                                                <td class="col-2">{{ round($log_entry->event['actions']->timeSpent, 1) }} seg</td>
                                             </tr>
                                         @endforeach
                                     @else
@@ -175,8 +175,8 @@
                                 <div class="card-title"><i class="material-icons">multiline_chart</i> Gráficas generales</div>
                                 <br>
                                 <div class="card-content">
-                                    <button id="inter_chart" class="btn btn-primary btn-block filterButtons fillWidth">Interacciones/Tienda</button>
-                                    <button id="level_chart" class="btn btn-primary btn-block filterButtons fillWidth">Nivel/Tiempo</button>
+                                    <button id="inter_chart" class="btn btn-primary btn-block filterButtons fillWidth">Interacciones por tienda</button>
+                                    <button id="level_chart" class="btn btn-primary btn-block filterButtons fillWidth">Tiempo en cada nivel</button>
                                 </div>
                             </div>
 
@@ -184,12 +184,12 @@
 
                     </div>
 
-                    <div id="dialog" title="Gráficas" width="500" style="display: none;">
+                    <div id="dialog" title="Gráficas [{{ $from ." a " . $to }}]" width="800" style="display: none;">
                         <div data-role="body">
 
                             <line-chart
                                 :values="{{ json_encode($chart_final['interaction']['values']) }}"
-                                :labels="['Santiago','Concepción']"
+                                :labels="{{ json_encode($chart_final['interaction']['labels']) }}"
                                 >
                             </line-chart>
                         </div>
