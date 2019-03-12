@@ -60,8 +60,8 @@ class HomeController extends Controller
                                     ->groupBy('timestamp')
                                     ->take(999)->get();
             $logArray  = $full_log->toArray();
-            array_walk($logArray, function(&$element1, $key) use($session_length){
-                $session_length += $element1->event['actions']->timeSpent;
+            array_walk($logArray, function(&$element, $key) use($session_length){
+                $session_length += $element['event']['actions']->timeSpent;
             });
             
             $event_count    = $full_log->count();
@@ -77,6 +77,7 @@ class HomeController extends Controller
         foreach ($stores as $index => $myStore){
             
             $chart_final['interaction']['labels'][] = $myStore->name;
+            $chart_final['interaction']['values'][] = 0;
             $laStore = \App\Store::where('identifier', $myStore->identifier)->first();
             $devices = $laStore->devices()->get();
             $devices_ids = array_column($devices->toArray(), 'device_id');
