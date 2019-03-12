@@ -86,12 +86,19 @@ $(function () {
             autoOpen: false
         });
 
+        window.dialog2 = $("#dialog2").dialog({
+            resizable: true,
+            uiLibrary: 'materialdesign',
+            modal: true,
+            autoOpen: false
+        });
+
         $('#inter_chart').on('click', function(){
             dialog.open();
         });
 
         $('#level_chart').on('click', function(){
-            dialog.open();
+            dialog2.open();
         });
 
     }, 1200);

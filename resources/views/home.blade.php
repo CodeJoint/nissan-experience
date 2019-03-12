@@ -123,6 +123,7 @@
                                     <doughnut-chart
                                         :labels="['Activos','Registrados']"
                                         :values="[{{$active_device_count}},{{ $device_count-$active_device_count }}]"
+                                        chart-id="deviceChart"
                                         >
                                     </doughnut-chart>
                                     <div class="center-icon under">
@@ -184,17 +185,35 @@
 
                     </div>
 
-                    <div id="dialog" title="Gráficas [{{ $from ." a " . $to }}]" width="800" style="display: none;">
+                    <div id="dialog" title="Uso por tienda [{{ $from ." a " . $to }}]" width="800" style="display: none;">
                         <div data-role="body">
 
                             <line-chart
                                 :values="{{ json_encode($chart_final['interaction']['values']) }}"
                                 :labels="{{ json_encode($chart_final['interaction']['labels']) }}"
+                                chart-id="interactionChart"
+                                data-label="Uso por tienda"
                                 >
                             </line-chart>
                         </div>
                         <div data-role="footer">
                             <button class="gj-button-md" onclick="dialog.close()">OK</button>
+                        </div>
+                    </div>
+
+                    <div id="dialog2" title="Tiempo pasado por nivel [{{ $from ." a " . $to }}]" width="800" style="display: none;">
+                        <div data-role="body">
+
+                            <line-chart
+                                :values="{{ json_encode($chart_final['level_time']['values']) }}"
+                                :labels="{{ json_encode($chart_final['level_time']['labels']) }}"
+                                chart-id="timeSpentChart"
+                                data-label="Tiempo pasado por nivel"
+                                >
+                            </line-chart>
+                        </div>
+                        <div data-role="footer">
+                            <button class="gj-button-md" onclick="dialog2.close()">OK</button>
                         </div>
                     </div>
 

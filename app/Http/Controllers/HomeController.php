@@ -60,6 +60,17 @@ class HomeController extends Controller
                                     ->orderBy('timestamp', 'desc')
                                     ->groupBy('timestamp')
                                     ->take(999)->get();
+        
+        $timeReport       = \App\Log::selectRaw( "SUM(JSON_UNQUOTE(JSON_EXTRACT(event, \"$.timeSpent\"))) as timeSum" )
+                                    ->where('timestamp', '>', $from)
+                                    ->where('timestamp', '<', $to)
+                                    ->when($store_param && ! empty($devices), function($q) use ($devices){
+                                        $q->where('device_id', $devices[0]->device_id);
+                                    })
+                                    ->orderBy('timestamp', 'desc')
+                                    ->groupBy('timestamp')
+                                    ->take(999)->get();
+        
             $logArray  = $full_log->toArray();
             array_walk($logArray, function(&$element, $key) use($session_length){
                 $session_length += $element['event']['actions']->timeSpent;
@@ -78,7 +89,13 @@ class HomeController extends Controller
                                                 ->count();
         
         $stores         = \App\Store::all(['name','identifier']);
-        
+        $levels         = \App\Log::selectRaw("DISTINCT JSON_UNQUOTE(JSON_EXTRACT(event, \"$.name\")) as level_name ")
+                                    ->get();
+        $levels = array_column($levels->toArray(), "level_name");
+        foreach ($levels as $index => $level) {
+            $chart_final['level_time']['labels'][$index] = $level;
+            $chart_final['level_time']['values'][$index] = rand(0,300);
+        }
         foreach ($stores as $index => $myStore){
             
             $chart_final['interaction']['labels'][] = $myStore->name;

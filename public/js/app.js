@@ -1771,11 +1771,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['values', 'labels'],
+  props: ['values', 'labels', 'chartId'],
   created: function created() {//
   },
   mounted: function mounted() {
-    console.log('Component mounted.');
     var data = {
       datasets: [{
         data: this.values,
@@ -1785,7 +1784,7 @@ __webpack_require__.r(__webpack_exports__);
       // These labels appear in the legend and in the tooltips when hovering different arcs
       labels: this.labels
     };
-    var ctx = document.getElementById("myChart").getContext("2d");
+    var ctx = document.getElementById(this.chartId).getContext("2d");
     var myDoughnutChart = new chart_js__WEBPACK_IMPORTED_MODULE_0___default.a(ctx, {
       type: 'doughnut',
       data: data,
@@ -1819,7 +1818,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['values', 'labels'],
+  props: ['values', 'labels', 'chartId', 'dataLabel'],
   created: function created() {//
   },
   mounted: function mounted() {
@@ -1827,7 +1826,7 @@ __webpack_require__.r(__webpack_exports__);
     var data = {
       labels: this.labels,
       datasets: [{
-        label: "Número de usuarios por tienda",
+        label: this.dataLabel,
         data: this.values
       }]
     };
@@ -1836,12 +1835,11 @@ __webpack_require__.r(__webpack_exports__);
         0: element[0],
         1: element[1]
       });
-    });
-    console.log(JSON.stringify(data.datasets[0].data)); //
+    }); //
     // backgroundColor: ['#4187ed', '#999999'],
     //     borderWidth: 0
 
-    var ctx = document.getElementById("myLineChart").getContext("2d");
+    var ctx = document.getElementById(this.chartId).getContext("2d");
     var myLineChart = new chart_js__WEBPACK_IMPORTED_MODULE_0___default.a(ctx, {
       type: 'line',
       data: data,
@@ -69517,7 +69515,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("canvas", { attrs: { id: "myChart", width: "400", height: "220" } })
+  return _c("canvas", { attrs: { id: _vm.chartId, width: "80", height: "40" } })
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -69542,7 +69540,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("canvas", {
-    attrs: { id: "myLineChart", width: "80", height: "40" }
+    attrs: { id: _vm.chartId, width: "500", height: "200" }
   })
 }
 var staticRenderFns = []
@@ -81678,11 +81676,17 @@ $(function () {
       modal: true,
       autoOpen: false
     });
+    window.dialog2 = $("#dialog2").dialog({
+      resizable: true,
+      uiLibrary: 'materialdesign',
+      modal: true,
+      autoOpen: false
+    });
     $('#inter_chart').on('click', function () {
       dialog.open();
     });
     $('#level_chart').on('click', function () {
-      dialog.open();
+      dialog2.open();
     });
   }, 1200);
 });

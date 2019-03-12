@@ -1,17 +1,17 @@
 <template>
-    <canvas id="myChart" width="400" height="220"></canvas>
+    <canvas :id="chartId" width="80" height="40"></canvas>
 </template>
 
 <script>
     import Chart from 'chart.js';
 
     export default {
-        props: ['values', 'labels'],
+        props: ['values', 'labels', 'chartId'],
         created() {
         //
         },
         mounted() {
-            console.log('Component mounted.')
+
             let data = {
                 datasets: [{
                     data: this.values,
@@ -23,7 +23,7 @@
                 labels: this.labels
             };
 
-            var ctx = document.getElementById("myChart").getContext("2d");
+            var ctx = document.getElementById(this.chartId).getContext("2d");
             var myDoughnutChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: data,
