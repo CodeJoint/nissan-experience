@@ -42,29 +42,31 @@
                     <div class="row">
                         <div class="col-md-12" >
 
-                            <div class="table-responsive">
-                                <table class="userLogTable table table-striped table-fixed">
+                            <div class="table-responsive tableResponsiveFix">
+                                <table class="userLogTable table table-striped table-condensed">
 
                                     <thead>
                                         <tr class="clearfix">
                                             <th class="col-2">Fecha</th>
                                             <th class="col-2">Equipo</th>
-                                            <th class="col-2">Nivel</th>
+                                            <th class="col-2">Niveles</th>
+                                            <th class="col-2">Niveles Visitados</th>
                                             <th class="col-2">Interacciones</th>
                                             <th class="col-2">Duración</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
-
+                                    @php(\Carbon\Carbon::setLocale('es'))
                                     @if(!empty($full_log))
                                         @foreach($full_log as $log_entry)
                                             <tr>
-                                                <td class="col-2">{{ $log_entry->timestamp }}</td>
+                                                <td class="col-2">{{ \Carbon\Carbon::createFromFormat( "Y-m-d H:i:s", $log_entry->timestamp )->diffForHumans() }}</td>
                                                 <td class="col-2">{{ $log_entry->device_id }}</td>
-                                                <td class="col-2"><strong>{{ $log_entry->event['name'] }}</strong></td>
+                                                <td class="col-2">{{ $log_entry->level_count }}</td>
+                                                <td class="col-2"><strong>{{ $log_entry->levels_concat }}</strong></td>
                                                 <td class="col-2">{{ $log_entry->event['actions']->interaction }}</td>
-                                                <td class="col-2">{{ round($log_entry->event['actions']->timeSpent,1) }} seg</td>
+                                                <td class="col-2">{{ round($log_entry->timeSpent, 1) }} seg</td>
                                             </tr>
                                         @endforeach
                                     @else
@@ -116,7 +118,7 @@
                         <section class="card dataCard">
 
                             <div class="card-body">
-                                <div class="card-title">Dispositivos</div>
+                                <div class="card-title">Actividad  @if($storeObject) {{$storeObject->name}} @endif</div>
                                 <div class="card-content">
                                     <doughnut-chart
                                         :labels="['Activos','Registrados']"
@@ -130,19 +132,19 @@
                                     </div>
                                     <h3>{{ $active_device_count }} / {{ $device_count }}</h3>
                                 </div>
-                                <div class="card-subtitle">( activos / registrados )</div>
+                                <div class="card-subtitle">( dispositivos activos / registrados )</div>
                             </div>
                         </section>
 
                         <section class="card dataCard">
 
                             <div class="card-body">
-                                <div class="card-title">Accesos únicos promedio</div>
+                                <div class="card-title">Usuarios únicos promedio</div>
                                 <div class="center-icon">
                                     <br>
                                     <br>
                                     <i class="material-icons">
-                                        track_changes
+                                        accessibility_new
                                     </i>
                                 </div>
                                 <div class="card-content">
@@ -170,7 +172,7 @@
 
                         <section class="card dataCard">
                             <div class="card-body" >
-                                <div class="card-title"><i class="material-icons">multiline_chart</i> Gráficas</div>
+                                <div class="card-title"><i class="material-icons">multiline_chart</i> Gráficas generales</div>
                                 <br>
                                 <div class="card-content">
                                     <button id="inter_chart" class="btn btn-primary btn-block filterButtons fillWidth">Interacciones/Tienda</button>

@@ -52,9 +52,10 @@ class HomeController extends Controller
         }
     
         $full_log       = \App\Log::where('timestamp', '>', $from)
+                                    ->selectRaw( "*, COUNT(id) as level_count, GROUP_CONCAT(JSON_UNQUOTE(JSON_EXTRACT(event, \"$.name\"))) as levels_concat, SUM(JSON_UNQUOTE(JSON_EXTRACT(event, \"$.timeSpent\"))) as timeSpent" )
                                     ->where('timestamp', '<', $to)
-                                    ->when($store_param, function($q){
-//                                        $q->where();
+                                    ->when($store_param && ! empty($devices), function($q) use ($devices){
+                                        $q->where('device_id', $devices[0]->device_id);
                                     })
                                     ->orderBy('timestamp', 'desc')
                                     ->groupBy('timestamp')
@@ -70,7 +71,11 @@ class HomeController extends Controller
             $session_length = $session_length/$event_count;
         
         $device_count   = $devices->count();
-        $active_device_count   = \App\Device::whereHas('logs')->count();
+        $active_device_count   = \App\Device::whereHas('logs')
+                                                ->when($store_param && ! empty($devices), function($q) use ($devices){
+                                                    $q->where('device_id', $devices[0]->device_id);
+                                                })
+                                                ->count();
         
         $stores         = \App\Store::all(['name','identifier']);
         

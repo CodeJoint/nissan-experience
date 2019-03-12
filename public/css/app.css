@@ -10655,6 +10655,12 @@ a.text-dark:focus {
   }
 }
 
+@-moz-document url-prefix()  {
+  fieldset {
+    display: table-cell;
+  }
+}
+
 *,
 *:before,
 *:after {
@@ -10908,6 +10914,11 @@ h1 {
   font-size: 1.2rem;
   letter-spacing: 1px;
   line-height: 2rem;
+}
+
+.container .mainSection .tableResponsiveFix {
+  max-height: 420px;
+  overflow-y: scroll;
 }
 
 .container .mainSection .userLogTable {

@@ -9,6 +9,10 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+@-moz-document url-prefix() {
+    fieldset { display: table-cell; }
+}
+
 *,*:before,*:after{
   box-sizing: inherit;
 }
@@ -231,6 +235,10 @@ h1   { font-size: 2px; font-size: 2rem; } /* =24px */
                 letter-spacing: 1px;
                 line-height: 2rem;
             }
+        }
+        .tableResponsiveFix{
+            max-height: 420px;
+            overflow-y: scroll;
         }
         .userLogTable{
             width: 99%;
