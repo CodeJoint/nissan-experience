@@ -102,14 +102,24 @@ class LogController extends Controller
      */
     public function report()
     {
-        $headers = ["Fecha","Equipo","Nivel","Interacciones","Duración"];
+        \Carbon\Carbon::setLocale('es');
+        $headers = ["Fecha","Equipo","Niveles","Niveles visitados","Interacciones","Duración total"];
         $store_param  = request()->get('store') && request()->get('store') !== "" ? request()->get('store') : NULL;
         $from    = request()->get('from') && request()->get('from') !== "" ? request()->get('from') : Carbon::now()->format('Y-m-d');
         $to      = request()->get('to') && request()->get('to') !== "" ? request()->get('to') : Carbon::now()->format('Y-m-d');
-        $filename = "../storage/app/public/{$store_param}.csv";
-        
+        $filename = "../storage/app/public/{$store_param}-{$from}-{$to}.csv";
+        $devices = [];
+        if($store_param){
+            $laStore = \App\Store::where('identifier', $store_param)->first();
+            $devices = $laStore->devices()->get();
+            $devices_ids = array_column($devices->toArray(), 'device_id');
+        }
         $full_log       = \App\Log::where('timestamp', '>', $from)
+                                    ->selectRaw( "*, COUNT(id) as level_count, GROUP_CONCAT(JSON_UNQUOTE(JSON_EXTRACT(event, \"$.name\"))) as levels_concat, SUM(JSON_UNQUOTE(JSON_EXTRACT(event, \"$.timeSpent\"))) as timeSpent" )
                                     ->where('timestamp', '<', $to)
+                                    ->when($store_param && ! empty($devices), function($q) use ($devices){
+                                        $q->where('device_id', $devices[0]->device_id);
+                                    })
                                     ->orderBy('timestamp', 'desc')
                                     ->groupBy('timestamp')
                                     ->take(999)->get();
@@ -120,9 +130,10 @@ class LogController extends Controller
         foreach($full_log as &$row) {
             $event = $row->event;
             $fake_array = [
-                        "fecha" => $row->timestamp,
+                        "fecha" => \Carbon\Carbon::createFromFormat( "Y-m-d H:i:s", $row->timestamp )->toDateTimeString(),
                         "equipo" => $row->device_id,
-                        "nivel" => $event['actions']->name,
+                        "no_niveles" => $row->level_count,
+                        "niveles_visitados" => $row->levels_concat,
                         "interacciones" => $event['actions']->interaction,
                         "duracion" => $event['actions']->timeSpent
                 ];
